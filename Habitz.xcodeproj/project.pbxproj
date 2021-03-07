@@ -57,6 +57,58 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6923E35525F57A0300F80423 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6923E35825F57A5D00F80423 /* NewHabit */,
+				6923E35725F57A5300F80423 /* CreateHabit */,
+				6923E35925F57A7000F80423 /* Habit */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6923E35625F57A0A00F80423 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				69F5642B25F5652A000D6A33 /* MutateHabit.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		6923E35725F57A5300F80423 /* CreateHabit */ = {
+			isa = PBXGroup;
+			children = (
+				69A0035A25F52D080018C0F0 /* CreateHabitView.swift */,
+			);
+			path = CreateHabit;
+			sourceTree = "<group>";
+		};
+		6923E35825F57A5D00F80423 /* NewHabit */ = {
+			isa = PBXGroup;
+			children = (
+				69A0036425F52D640018C0F0 /* NewHabitView.swift */,
+				69A0036125F52D200018C0F0 /* NewHabitButton.swift */,
+			);
+			path = NewHabit;
+			sourceTree = "<group>";
+		};
+		6923E35925F57A7000F80423 /* Habit */ = {
+			isa = PBXGroup;
+			children = (
+				6923E35A25F57A9100F80423 /* View */,
+				6923E35625F57A0A00F80423 /* Model */,
+			);
+			path = Habit;
+			sourceTree = "<group>";
+		};
+		6923E35A25F57A9100F80423 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				69A0035E25F52D130018C0F0 /* HabitView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		6953939025F531F500D50D59 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,11 +163,7 @@
 		69A0035925F52CF40018C0F0 /* HabitBuilder */ = {
 			isa = PBXGroup;
 			children = (
-				69A0035A25F52D080018C0F0 /* CreateHabitView.swift */,
-				69A0035E25F52D130018C0F0 /* HabitView.swift */,
-				69A0036125F52D200018C0F0 /* NewHabitButton.swift */,
-				69A0036425F52D640018C0F0 /* NewHabitView.swift */,
-				69F5642B25F5652A000D6A33 /* MutateHabit.swift */,
+				6923E35525F57A0300F80423 /* View */,
 			);
 			path = HabitBuilder;
 			sourceTree = "<group>";
