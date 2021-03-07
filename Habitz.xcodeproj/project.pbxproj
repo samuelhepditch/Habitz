@@ -57,16 +57,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6923E35525F57A0300F80423 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				6923E35825F57A5D00F80423 /* NewHabit */,
-				6923E35725F57A5300F80423 /* CreateHabit */,
-				6923E35925F57A7000F80423 /* Habit */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		6923E35625F57A0A00F80423 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -163,7 +153,9 @@
 		69A0035925F52CF40018C0F0 /* HabitBuilder */ = {
 			isa = PBXGroup;
 			children = (
-				6923E35525F57A0300F80423 /* View */,
+				6923E35825F57A5D00F80423 /* NewHabit */,
+				6923E35725F57A5300F80423 /* CreateHabit */,
+				6923E35925F57A7000F80423 /* Habit */,
 			);
 			path = HabitBuilder;
 			sourceTree = "<group>";
