@@ -8,6 +8,9 @@
 import SwiftUI
 import Combine
 
+
+//Mark: HabitView  **********************************************
+
 struct HabitView: View {
     @EnvironmentObject var userInfo: UserInfo
     var body: some View {
@@ -15,21 +18,9 @@ struct HabitView: View {
             HStack {
                 ForEach(userInfo.HabitArray){ habit in
                     VStack{
-                        HStack{
-                            categoryImage(habit.Category)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 50, height: 50)
-                                .foregroundColor(habit.Colour)
-                                .padding(.leading,50)
-                            Text(habit.Name)
-                                .font(.title)
-                                .fontWeight(.heavy)
-                                .foregroundColor(habit.Colour)
-                                .padding(.leading, 5)
-                            Spacer()
-                        }.offset(y: 20)
-                         .padding()
+                        titleView(habit: habit)
+                        Spacer()
+                        Divider()
                         Spacer()
                         progressView(habit: habit)
                         Text("\"\(habit.Motivation)\"")
@@ -37,29 +28,14 @@ struct HabitView: View {
                             .fontWeight(.heavy)
                             .foregroundColor(habit.Colour)
                             .padding()
+                        Divider()
                         Spacer()
                         buttonsView(habit: habit)
+                            .offset(y: -50)
                     }
                 }.frame(width: 400)
                 NewHabitView()
             }
-        }
-    }
-
-    
-    func categoryImage(_ category: String) -> Image {
-        if category == "Diet" {
-            return Image(systemName: "mouth")
-        }else if category == "Fitness"{
-            return Image(systemName: "lungs")
-        }else if category == "Mindfulness"{
-            return Image(systemName: "face.smiling")
-        }else if category == "Study"{
-            return Image(systemName: "book")
-        }else if category == "Productivity"{
-            return Image(systemName: "lightbulb")
-        }else{
-            return Image(systemName: "arrow.clockwise")
         }
     }
 }
@@ -70,6 +46,30 @@ struct HabitView_Previews: PreviewProvider {
     }
 }
 
+//Mark: titleView **********************************************
+
+struct titleView: View {
+    var habit: Habit
+    let mutateHabit = MutateHabit()
+    @EnvironmentObject var userInfo: UserInfo
+    var body: some View{
+        HStack{
+            self.mutateHabit.categoryImage(habit.Category)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 50, height: 50)
+                .foregroundColor(habit.Colour)
+                .padding(.leading,50)
+            Text(habit.Name)
+                .font(.largeTitle)
+                .fontWeight(.heavy)
+                .foregroundColor(habit.Colour)
+                .padding(.leading, 5)
+            Spacer()
+        }.offset(y: 20)
+        .padding()
+    }
+}
 
 //Mark: progressView **********************************************
 
@@ -107,26 +107,32 @@ struct buttonsView: View {
         VStack {
             HStack{
                 Button(action:{
+                    self.mutateHabit.restartHabit(habit)
+                    self.userInfo.objectWillChange.send()
                 }){
                     Text("RESTART")
                         .font(.title)
                         .fontWeight(.heavy)
                         .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
+                        .frame(maxWidth: .infinity, minHeight: 50)
                 }
-                .border(Color.black)
                 .background(habit.Colour)
+                .cornerRadius(10)
                 .padding()
                 
-                Button(action:{}){
-                    Text("DELETE")
-                        .font(.title)
-                        .fontWeight(.heavy)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
+                Button(action:{
+                    self.mutateHabit.deleteHabit(userInfo.HabitArray)
+                    self.userInfo.objectWillChange.send()
+                }){
+                        Text("DELETE")
+                            .font(.title)
+                            .fontWeight(.heavy)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, minHeight: 50)
+
                 }
-                .border(Color.black)
                 .background(habit.Colour)
+                .cornerRadius(10)
                 .padding()
             }
             
@@ -141,13 +147,17 @@ struct buttonsView: View {
                     .font(.title)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, minHeight: 50)
             }
             .alert(isPresented: $alertShown) {
-                Alert(title: Text("Congrats!\nYou built a new habit.").font(.title), message: Text(""), dismissButton: .default(Text("OK")))
+                Alert(title: Text("Congrats!\nYou built a new habit.").font(.title), message: Text(""), dismissButton: .default(Text("OK")){
+                        self.mutateHabit.restartHabit(habit)
+                        self.userInfo.objectWillChange.send()
+                    
+                })
             }
-            .border(Color.black)
             .background(habit.Colour)
+            .cornerRadius(10)
             .frame(maxWidth: .infinity)
             .padding()
         }
