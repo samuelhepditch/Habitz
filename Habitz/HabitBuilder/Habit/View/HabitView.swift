@@ -27,11 +27,12 @@ struct HabitView: View {
                             .font(.title)
                             .fontWeight(.heavy)
                             .foregroundColor(habit.Colour)
+                            .multilineTextAlignment(.center)
                             .padding()
                         Divider()
                         Spacer()
                         buttonsView(habit: habit)
-                            .offset(y: -50)
+                            .offset(y: -10)
                     }
                 }.frame(width: 400)
                 NewHabitView()
@@ -118,10 +119,11 @@ struct buttonsView: View {
                 }
                 .background(habit.Colour)
                 .cornerRadius(10)
+                .buttonStyle(StandardButtonStyle())
                 .padding()
                 
                 Button(action:{
-                    self.mutateHabit.deleteHabit(userInfo.HabitArray)
+                    self.mutateHabit.deleteHabit(userInfo,habit)
                     self.userInfo.objectWillChange.send()
                 }){
                         Text("DELETE")
@@ -133,6 +135,7 @@ struct buttonsView: View {
                 }
                 .background(habit.Colour)
                 .cornerRadius(10)
+                .buttonStyle(StandardButtonStyle())
                 .padding()
             }
             
@@ -158,6 +161,7 @@ struct buttonsView: View {
             }
             .background(habit.Colour)
             .cornerRadius(10)
+            .buttonStyle(StandardButtonStyle())
             .frame(maxWidth: .infinity)
             .padding()
         }

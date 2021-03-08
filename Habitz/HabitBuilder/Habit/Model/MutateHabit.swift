@@ -46,6 +46,17 @@ struct MutateHabit {
         }
     }
     
-    func deleteHabit(_ habitArray: [Habit]) {
+    func deleteHabit(_ info: UserInfo,_ habit: Habit) {
+        var index = 0
+        var found = false
+        
+        while(!found){
+            if info.HabitArray[index].Name == habit.Name{
+                found = true
+            }else{
+                index += 1
+            }
+        }
+        info.HabitArray.remove(at: index)
     }
 }
