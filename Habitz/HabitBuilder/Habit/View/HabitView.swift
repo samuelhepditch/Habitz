@@ -23,12 +23,16 @@ struct HabitView: View {
                         Divider()
                         Spacer()
                         progressView(habit: habit)
-                        Text("\"\(habit.Motivation)\"")
-                            .font(.title)
-                            .fontWeight(.heavy)
-                            .foregroundColor(habit.Colour)
-                            .multilineTextAlignment(.center)
-                            .padding()
+                        if habit.Motivation != "" {
+                            Text("\"\(habit.Motivation)\"")
+                                .font(.title)
+                                .fontWeight(.heavy)
+                                .foregroundColor(habit.Colour)
+                                .multilineTextAlignment(.center)
+                                .padding()
+                        }else{
+                            Spacer()
+                        }
                         Divider()
                         Spacer()
                         buttonsView(habit: habit)
@@ -101,7 +105,8 @@ struct progressView: View {
 
 struct buttonsView: View {
     var habit: Habit
-    @State private var alertShown = false
+    @State private var deleteAlertShown = false
+    @State private var successAlertShown = false
     let mutateHabit = MutateHabit()
     @EnvironmentObject var userInfo: UserInfo
     var body: some View {
@@ -117,24 +122,41 @@ struct buttonsView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity, minHeight: 50)
                 }
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color.black, lineWidth: 2)
+                )
                 .background(habit.Colour)
-                .cornerRadius(10)
+                .cornerRadius(20)
                 .buttonStyle(StandardButtonStyle())
                 .padding()
                 
                 Button(action:{
-                    self.mutateHabit.deleteHabit(userInfo,habit)
-                    self.userInfo.objectWillChange.send()
+                    self.deleteAlertShown = true
                 }){
-                        Text("DELETE")
-                            .font(.title)
-                            .fontWeight(.heavy)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, minHeight: 50)
-
+                    Text("DELETE")
+                        .font(.title)
+                        .fontWeight(.heavy)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, minHeight: 50)
                 }
+                .alert(isPresented: $deleteAlertShown) {
+                    Alert(
+                        title: Text("Are you sure you want to delete this habit?"),
+                        message: Text(""),
+                        primaryButton: .destructive(Text("Delete")) {
+                            self.mutateHabit.deleteHabit(self.userInfo,habit)
+                            self.userInfo.objectWillChange.send()
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color.black, lineWidth: 2)
+                )
                 .background(habit.Colour)
-                .cornerRadius(10)
+                .cornerRadius(20)
                 .buttonStyle(StandardButtonStyle())
                 .padding()
             }
@@ -143,7 +165,7 @@ struct buttonsView: View {
                 self.mutateHabit.buildHabit(habit)
                 self.userInfo.objectWillChange.send()
                 if habit.Blocks[habit.Blocks.count - 1][1] == 1 {
-                    self.alertShown = true
+                    self.successAlertShown = true
                 }
             }){
                 Text("BUILD")
@@ -152,18 +174,22 @@ struct buttonsView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, minHeight: 50)
             }
-            .alert(isPresented: $alertShown) {
+            .alert(isPresented: $successAlertShown) {
                 Alert(title: Text("Congrats!\nYou built a new habit.").font(.title), message: Text(""), dismissButton: .default(Text("OK")){
-                        self.mutateHabit.restartHabit(habit)
-                        self.userInfo.objectWillChange.send()
-                    
+                    self.mutateHabit.restartHabit(habit)
+                    self.userInfo.objectWillChange.send()
                 })
             }
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color.black, lineWidth: 2)
+            )
             .background(habit.Colour)
-            .cornerRadius(10)
+            .cornerRadius(20)
             .buttonStyle(StandardButtonStyle())
             .frame(maxWidth: .infinity)
             .padding()
+            
         }
     }
 }

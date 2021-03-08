@@ -38,10 +38,9 @@ struct CreateHabitView: View {
     }
     
     enum Colours: String, CaseIterable, Identifiable {
+        case System
         case Red
         case Orange
-        case Green
-        case Yellow
         case Blue
         case Purple
         var id: String { self.rawValue }
@@ -65,7 +64,7 @@ struct CreateHabitView: View {
                 }
                 Section {
                     TextField("Name",text: self.$Name)
-                    TextField("My Motivation", text: self.$Motivation)
+                    TextField("My Motivation (Optional)", text: self.$Motivation)
                 }
                 Section {
                     Text("Duration")
@@ -101,16 +100,17 @@ struct CreateHabitView: View {
                 
                 Section {
                     Picker("", selection: $Colour) {
+                        Text("System")
+                            .tag(Colours.System)
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
                         Text("Red")
                             .foregroundColor(.red)
                             .tag(Colours.Red)
-                        Text("Orange").tag(Colours.Orange)
+                        Text("Orange")
+                            .tag(Colours.Orange)
                             .foregroundColor(.orange)
-                        Text("Yellow").tag(Colours.Yellow)
-                            .foregroundColor(.yellow)
-                        Text("Green").tag(Colours.Green)
-                            .foregroundColor(.green)
-                        Text("Blue").tag(Colours.Blue)
+                        Text("Blue")
+                            .tag(Colours.Blue)
                             .foregroundColor(.blue)
                         Text("Purple")
                             .foregroundColor(.purple)
@@ -152,14 +152,12 @@ struct CreateHabitView: View {
     
 
     func blockColour(_ colour: String) -> Color {
-        if colour == "Red"{
+        if colour == "System"{
+            return Color(colorScheme == .dark ? .gray : .black)
+        }else if colour == "Red"{
             return Color(.red)
         }else if colour == "Orange" {
             return Color(.orange)
-        }else if colour == "Green" {
-            return Color(.green)
-        }else if colour == "Yellow" {
-            return Color(.yellow)
         }else if colour == "Blue" {
             return Color(.blue)
         }else{
