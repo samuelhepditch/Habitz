@@ -23,6 +23,19 @@ struct MutateHabit {
         }
     }
     
+    func undoHabit(_ habit: Habit) {
+        var undone = false
+        var index = habit.Blocks.count - 1
+        while(!undone){
+            if habit.Blocks[index][1] == 1.0{
+                habit.Blocks[index][1] = 0.5
+                undone = true
+            }else{
+                index -= 1
+            }
+        }
+    }
+    
     func categoryImage(_ category: String) -> Image {
         if category == "Diet" {
             return Image(systemName: "mouth")
@@ -47,6 +60,11 @@ struct MutateHabit {
     }
     
     func deleteHabit(_ info: UserInfo,_ habit: Habit) {
+        
+        if habit.Blocks[0][1] == 1 {
+            info.HabitsFailed += 1
+        }
+        
         var index = 0
         var found = false
         
