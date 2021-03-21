@@ -74,7 +74,7 @@ struct titleView: View {
     let mutateHabit = MutateHabit()
     
     var habit: Habit
-    
+    @State private var actionMenuActive: Bool  = false
     var body: some View{
         HStack{
             self.mutateHabit.categoryImage(habit.Category)
@@ -86,6 +86,29 @@ struct titleView: View {
                 .font(.largeTitle)
                 .fontWeight(.semibold)
             Spacer()
+            Button(action:{
+                self.actionMenuActive = true
+            }){
+                Image(systemName: "ellipsis")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
+            }
+            .actionSheet(isPresented: $actionMenuActive, content: {
+                let Restart = ActionSheet.Button.default(Text("Restart")){
+                    self.mutateHabit.restartHabit(habit)
+                    self.userInfo.objectWillChange.send()
+                }
+                let Delete = ActionSheet.Button.default(Text("Delete")){
+                    self.mutateHabit.deleteHabit(self.userInfo,habit)
+                    self.userInfo.objectWillChange.send()
+                }
+                let Cancel = ActionSheet.Button.default(Text("Cancel")){
+                    self.actionMenuActive = false
+                }
+                return ActionSheet(title: Text("Action Menu").foregroundColor(.black), buttons: [Restart,Delete,Cancel])
+            })
         }
     }
 }
@@ -127,11 +150,14 @@ struct undoButtonView: View {
         HStack{
             Spacer()
             Button(action:{
+                self.mutateHabit.undoHabit(habit)
+                self.userInfo.objectWillChange.send()
             }){
                 Text("UNDO")
                     .fontWeight(.heavy)
                     .foregroundColor(colorScheme == .dark ? .white : .black)
             }
+            .disabled(habit.Blocks[0][1] == 0.5 ? true : false)
             Spacer()
         }.padding(10)
     }
