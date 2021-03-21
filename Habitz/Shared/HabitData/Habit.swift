@@ -14,9 +14,8 @@ class Habit: Identifiable, ObservableObject {
     var Motivation = ""
     var Category = ""
     var Blocks = [[Double]]()
-    var Colour = Color(.red)
-    
-    init(Name: String, Motivation: String, Category: String, Blocks: [[Double]], Colour: Color){
+    var Colour = Color(.black)
+    init(Name: String, Motivation: String, Category: String, Blocks: [[Double]],Colour: Color){
         self.Name = Name
         self.Motivation = Motivation
         self.Category = Category

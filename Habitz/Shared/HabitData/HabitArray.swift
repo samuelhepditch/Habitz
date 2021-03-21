@@ -9,9 +9,7 @@ import Foundation
 import Combine
 
 class UserInfo: ObservableObject {
-    @Published var HabitArray = [Habit](){
-        willSet {
-            objectWillChange.send()
-        }
-    }
+    @Published var HabitArray = [Habit]()
+    @Published var HabitsBuilt = 0
+    @Published var HabitsFailed = 0
 }

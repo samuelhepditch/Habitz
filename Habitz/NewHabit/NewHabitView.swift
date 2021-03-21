@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct NewHabitView: View {
-    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         ZStack{
-            Color(colorScheme == .dark ? .darkGray : .white)
+            Color(.systemBackground)
                 .edgesIgnoringSafeArea(.all)
             NewHabitButton()
         }.frame(width: 400)

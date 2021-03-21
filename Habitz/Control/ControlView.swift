@@ -10,7 +10,7 @@ import SwiftUI
 struct ControlView: View {
     var body: some View {
         TabView {
-            ProfileView()
+            InsightView()
                 .tabItem{
                     Image(systemName: "person.fill")
                 }

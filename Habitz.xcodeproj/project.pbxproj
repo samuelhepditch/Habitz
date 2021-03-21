@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6916006D2606D87E00DEF042 /* InsightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6916006C2606D87E00DEF042 /* InsightView.swift */; };
+		691600792606E98C00DEF042 /* HabitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691600782606E98C00DEF042 /* HabitButton.swift */; };
 		6953939225F5320900D50D59 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6953939125F5320900D50D59 /* SettingsView.swift */; };
 		69A0034125F52B100018C0F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0034025F52B100018C0F0 /* AppDelegate.swift */; };
 		69A0034325F52B100018C0F0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0034225F52B100018C0F0 /* SceneDelegate.swift */; };
@@ -20,12 +22,13 @@
 		69A0036525F52D640018C0F0 /* NewHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0036425F52D640018C0F0 /* NewHabitView.swift */; };
 		69A0036925F52DB40018C0F0 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0036825F52DB40018C0F0 /* Habit.swift */; };
 		69A0036D25F52DC90018C0F0 /* HabitArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0036C25F52DC90018C0F0 /* HabitArray.swift */; };
-		69A0037125F52EF40018C0F0 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0037025F52EF40018C0F0 /* ProfileView.swift */; };
 		69A0037A25F52F810018C0F0 /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0037925F52F810018C0F0 /* ControlView.swift */; };
 		69F5642C25F5652A000D6A33 /* MutateHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F5642B25F5652A000D6A33 /* MutateHabit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6916006C2606D87E00DEF042 /* InsightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightView.swift; sourceTree = "<group>"; };
+		691600782606E98C00DEF042 /* HabitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitButton.swift; sourceTree = "<group>"; };
 		6953939125F5320900D50D59 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		69A0033D25F52B100018C0F0 /* Habitz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habitz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69A0034025F52B100018C0F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -41,7 +44,6 @@
 		69A0036425F52D640018C0F0 /* NewHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitView.swift; sourceTree = "<group>"; };
 		69A0036825F52DB40018C0F0 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		69A0036C25F52DC90018C0F0 /* HabitArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitArray.swift; sourceTree = "<group>"; };
-		69A0037025F52EF40018C0F0 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		69A0037925F52F810018C0F0 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
 		69F5642B25F5652A000D6A33 /* MutateHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutateHabit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -57,12 +59,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6923E35625F57A0A00F80423 /* Model */ = {
+		6916006F2606DCB400DEF042 /* UIElements */ = {
 			isa = PBXGroup;
 			children = (
-				69F5642B25F5652A000D6A33 /* MutateHabit.swift */,
+				691600782606E98C00DEF042 /* HabitButton.swift */,
 			);
-			path = Model;
+			path = UIElements;
+			sourceTree = "<group>";
+		};
+		6916007C2607130C00DEF042 /* HabitData */ = {
+			isa = PBXGroup;
+			children = (
+				69A0036C25F52DC90018C0F0 /* HabitArray.swift */,
+				69A0036825F52DB40018C0F0 /* Habit.swift */,
+			);
+			path = HabitData;
 			sourceTree = "<group>";
 		};
 		6923E35725F57A5300F80423 /* CreateHabit */ = {
@@ -85,18 +96,10 @@
 		6923E35925F57A7000F80423 /* Habit */ = {
 			isa = PBXGroup;
 			children = (
-				6923E35A25F57A9100F80423 /* View */,
-				6923E35625F57A0A00F80423 /* Model */,
+				69A0035E25F52D130018C0F0 /* HabitView.swift */,
+				69F5642B25F5652A000D6A33 /* MutateHabit.swift */,
 			);
 			path = Habit;
-			sourceTree = "<group>";
-		};
-		6923E35A25F57A9100F80423 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				69A0035E25F52D130018C0F0 /* HabitView.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		6953939025F531F500D50D59 /* Settings */ = {
@@ -127,10 +130,12 @@
 			isa = PBXGroup;
 			children = (
 				69A0037325F52F0E0018C0F0 /* Control */,
-				69A0036F25F52EE00018C0F0 /* Profile */,
-				69A0035925F52CF40018C0F0 /* HabitBuilder */,
-				69A0036725F52D9D0018C0F0 /* Shared */,
+				69A0036F25F52EE00018C0F0 /* Insights */,
+				6923E35825F57A5D00F80423 /* NewHabit */,
+				6923E35725F57A5300F80423 /* CreateHabit */,
+				6923E35925F57A7000F80423 /* Habit */,
 				6953939025F531F500D50D59 /* Settings */,
+				69A0036725F52D9D0018C0F0 /* Shared */,
 				69A0034025F52B100018C0F0 /* AppDelegate.swift */,
 				69A0034225F52B100018C0F0 /* SceneDelegate.swift */,
 				69A0034925F52B110018C0F0 /* Assets.xcassets */,
@@ -150,31 +155,21 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		69A0035925F52CF40018C0F0 /* HabitBuilder */ = {
-			isa = PBXGroup;
-			children = (
-				6923E35825F57A5D00F80423 /* NewHabit */,
-				6923E35725F57A5300F80423 /* CreateHabit */,
-				6923E35925F57A7000F80423 /* Habit */,
-			);
-			path = HabitBuilder;
-			sourceTree = "<group>";
-		};
 		69A0036725F52D9D0018C0F0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				69A0036825F52DB40018C0F0 /* Habit.swift */,
-				69A0036C25F52DC90018C0F0 /* HabitArray.swift */,
+				6916007C2607130C00DEF042 /* HabitData */,
+				6916006F2606DCB400DEF042 /* UIElements */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
 		};
-		69A0036F25F52EE00018C0F0 /* Profile */ = {
+		69A0036F25F52EE00018C0F0 /* Insights */ = {
 			isa = PBXGroup;
 			children = (
-				69A0037025F52EF40018C0F0 /* ProfileView.swift */,
+				6916006C2606D87E00DEF042 /* InsightView.swift */,
 			);
-			path = Profile;
+			path = Insights;
 			sourceTree = "<group>";
 		};
 		69A0037325F52F0E0018C0F0 /* Control */ = {
@@ -201,6 +196,8 @@
 			dependencies = (
 			);
 			name = Habitz;
+			packageProductDependencies = (
+			);
 			productName = Habitz;
 			productReference = 69A0033D25F52B100018C0F0 /* Habitz.app */;
 			productType = "com.apple.product-type.application";
@@ -228,6 +225,8 @@
 				Base,
 			);
 			mainGroup = 69A0033425F52B100018C0F0;
+			packageReferences = (
+			);
 			productRefGroup = 69A0033E25F52B100018C0F0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -255,10 +254,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				691600792606E98C00DEF042 /* HabitButton.swift in Sources */,
 				69A0034125F52B100018C0F0 /* AppDelegate.swift in Sources */,
 				69A0034825F52B100018C0F0 /* Habitz.xcdatamodeld in Sources */,
 				69A0037A25F52F810018C0F0 /* ControlView.swift in Sources */,
-				69A0037125F52EF40018C0F0 /* ProfileView.swift in Sources */,
 				69A0036525F52D640018C0F0 /* NewHabitView.swift in Sources */,
 				69A0034325F52B100018C0F0 /* SceneDelegate.swift in Sources */,
 				69A0036D25F52DC90018C0F0 /* HabitArray.swift in Sources */,
@@ -266,6 +265,7 @@
 				69A0035F25F52D130018C0F0 /* HabitView.swift in Sources */,
 				6953939225F5320900D50D59 /* SettingsView.swift in Sources */,
 				69F5642C25F5652A000D6A33 /* MutateHabit.swift in Sources */,
+				6916006D2606D87E00DEF042 /* InsightView.swift in Sources */,
 				69A0036925F52DB40018C0F0 /* Habit.swift in Sources */,
 				69A0036225F52D200018C0F0 /* NewHabitButton.swift in Sources */,
 			);

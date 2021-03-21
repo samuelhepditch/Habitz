@@ -28,12 +28,12 @@ struct MutateHabit {
             return Image(systemName: "mouth")
         }else if category == "Fitness"{
             return Image(systemName: "lungs")
-        }else if category == "Mindfulness"{
+        }else if category == "Happiness"{
             return Image(systemName: "face.smiling")
-        }else if category == "Study"{
-            return Image(systemName: "book")
         }else if category == "Productivity"{
-            return Image(systemName: "lightbulb")
+            return Image(systemName: "checkmark.square")
+        }else if category == "ColdTurkey"{
+            return Image(systemName: "nosign")
         }else{
             return Image(systemName: "arrow.clockwise")
         }

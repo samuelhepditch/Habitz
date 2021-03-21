@@ -8,31 +8,23 @@
 import SwiftUI
 
 struct CreateHabitView: View {
-    
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var userInfo: UserInfo
     
     @State private var Name: String = ""
     @State private var Motivation: String = ""
     @State private var Category = Catergories.Diet
-    @State private var Duration = Durations.One
-    @State private var Colour = Colours.Red
-    @EnvironmentObject var userInfo: UserInfo
+    @State private var Colour = Colours.System
+    @State private var Days: String = ""
     
-    enum Durations: String, CaseIterable, Identifiable{
-        case One
-        case Two
-        case Three
-        case Four
-        var id: String { self.rawValue }
-    }
     
     enum Catergories: String, CaseIterable, Identifiable {
         case Diet
         case Fitness
-        case Mindfulness
-        case Study
+        case Happiness
         case Productivity
+        case ColdTurkey
         case Routine
         var id: String { self.rawValue }
     }
@@ -41,15 +33,15 @@ struct CreateHabitView: View {
         case System
         case Red
         case Orange
-        case Blue
         case Purple
         var id: String { self.rawValue }
     }
     
     
     var newHabit: Habit {
-        Habit(Name: self.Name,Motivation: self.Motivation,Category: self.Category.rawValue,Blocks: arrayBuilder(self.Duration.rawValue),Colour: blockColour(self.Colour.rawValue))
+        Habit(Name: self.Name,Motivation: self.Motivation,Category: self.Category.rawValue,Blocks: arrayBuilder(Int(self.Days)!),Colour: blockColour(self.Colour.rawValue))
     }
+    
     var body: some View {
         VStack {
             Text("New Habit")
@@ -64,19 +56,14 @@ struct CreateHabitView: View {
                 }
                 Section {
                     TextField("Name",text: self.$Name)
-                    TextField("My Motivation (Optional)", text: self.$Motivation)
+                    TextField("My Motivation", text: self.$Motivation)
                 }
                 Section {
                     Text("Duration")
                         .bold()
                 }
                 Section {
-                    Picker("",selection: self.$Duration){
-                        Text("1 Week").tag(Durations.One)
-                        Text("2 Weeks").tag(Durations.Two)
-                        Text("3 Weeks").tag(Durations.Three)
-                        Text("4 Weeks").tag(Durations.Four)
-                    }.pickerStyle(SegmentedPickerStyle())
+                    TextField("Days",text: self.$Days)
                 }
                 Section {
                     Text("Category")
@@ -86,38 +73,25 @@ struct CreateHabitView: View {
                     Picker("", selection: self.$Category) {
                         Text("Diet").tag(Catergories.Diet)
                         Text("Fitness").tag(Catergories.Fitness)
-                        Text("Mindfulness").tag(Catergories.Mindfulness)
-                        Text("Study").tag(Catergories.Study)
+                        Text("Happiness").tag(Catergories.Happiness)
                         Text("Productivity").tag(Catergories.Productivity)
+                        Text("Cold Turkey").tag(Catergories.ColdTurkey)
                         Text("Routine").tag(Catergories.Routine)
                     }.pickerStyle(WheelPickerStyle())
                 }
                 
                 Section {
-                    Text("Color")
+                    Text("Colors")
                         .bold()
                 }
-                
                 Section {
-                    Picker("", selection: $Colour) {
-                        Text("System")
-                            .tag(Colours.System)
-                            .foregroundColor(colorScheme == .dark ? .white : .black)
-                        Text("Red")
-                            .foregroundColor(.red)
-                            .tag(Colours.Red)
-                        Text("Orange")
-                            .tag(Colours.Orange)
-                            .foregroundColor(.orange)
-                        Text("Blue")
-                            .tag(Colours.Blue)
-                            .foregroundColor(.blue)
-                        Text("Purple")
-                            .foregroundColor(.purple)
-                            .tag(Colours.Purple)
+                    Picker("", selection: self.$Colour) {
+                        Text("System").tag(Colours.System)
+                        Text("Red").foregroundColor(.red).tag(Colours.Red)
+                        Text("Orange").foregroundColor(.orange).tag(Colours.Orange)
+                        Text("Purple").foregroundColor(.purple).tag(Colours.Purple)
                     }.pickerStyle(WheelPickerStyle())
                 }
-                
             }
         }
         
@@ -129,41 +103,28 @@ struct CreateHabitView: View {
                 .font(.title)
                 .foregroundColor(colorScheme == .dark ? .white : .black)
                 .fontWeight(.bold)
-        }
+        }.edgesIgnoringSafeArea(.bottom)
     }
     
-    func arrayBuilder(_ duration: String) -> [[Double]]{
-        var days: Int
+    func arrayBuilder(_ duration: Int) -> [[Double]]{
         var dayArray = [[Double]]()
-        if duration == "One" {
-            days = 7
-        }else if duration == "Two"{
-            days = 14
-        }else if duration == "Three"{
-            days = 21
-        }else{
-            days = 28
-        }
-        for i in 1...days{
+        for i in 1...duration{
             dayArray.append([Double(i),0.5])
         }
         return dayArray
     }
     
-
     func blockColour(_ colour: String) -> Color {
-        if colour == "System"{
-            return Color(colorScheme == .dark ? .gray : .black)
-        }else if colour == "Red"{
-            return Color(.red)
-        }else if colour == "Orange" {
-            return Color(.orange)
-        }else if colour == "Blue" {
-            return Color(.blue)
-        }else{
-            return Color(.purple)
+            if colour == "System"{
+                return Color(colorScheme == .dark ? .gray : .black)
+            }else if colour == "Red"{
+                return Color(.red)
+            }else if colour == "Orange" {
+                return Color(.orange)
+            }else{
+                return Color(.purple)
+            }
         }
-    }
 }
 
 struct CreateHabitView_Previews: PreviewProvider {
