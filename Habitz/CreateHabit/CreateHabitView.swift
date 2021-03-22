@@ -39,7 +39,7 @@ struct CreateHabitView: View {
     
     
     var newHabit: Habit {
-        Habit(Name: self.Name,Motivation: self.Motivation,Category: self.Category.rawValue,Blocks: arrayBuilder(Int(self.Days)!),Colour: blockColour(self.Colour.rawValue))
+        Habit(Name: self.Name,Motivation: self.Motivation,Category: self.Category.rawValue,Blocks: arrayBuilder(Int(self.Days)!),Colour: blockColour(self.Colour.rawValue), Notes: "")
     }
     
     var body: some View {
@@ -56,7 +56,9 @@ struct CreateHabitView: View {
                 }
                 Section {
                     TextField("Name",text: self.$Name)
+                        .disableAutocorrection(true)
                     TextField("My Motivation", text: self.$Motivation)
+                        .disableAutocorrection(true)
                 }
                 Section {
                     Text("Duration")
@@ -132,3 +134,4 @@ struct CreateHabitView_Previews: PreviewProvider {
         CreateHabitView()
     }
 }
+

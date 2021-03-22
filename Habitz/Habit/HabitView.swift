@@ -8,7 +8,6 @@
 import SwiftUI
 import Combine
 
-
 //Mark: HabitView  **********************************************
 
 struct HabitView: View {
@@ -47,7 +46,7 @@ struct HabitView: View {
                                     .fontWeight(.semibold)
                             }
                             Section{
-                                notesView()
+                                notesView(habit: habit)
                             }
                         }
                     }.frame(width: 410)
@@ -195,67 +194,44 @@ struct buildButtonView: View {
             }
             Spacer()
         }.padding(10)
-        //                Button(action:{
-        //                    if self.habit.Blocks[0][1] == 1 {
-        //                        self.userInfo.HabitsFailed += 1
-        //                    }
-        //                    self.mutateHabit.restartHabit(habit)
-        //                    self.userInfo.objectWillChange.send()
-        //                }){
-        //                    Image(systemName: "arrow.clockwise")
-        //                        .resizable()
-        //                        .aspectRatio(contentMode: .fit)
-        //                        .frame(maxWidth: 50, maxHeight: 50)
-        //                        .foregroundColor(HabitzColours.ButtonTextColour)
-        //                }
-        //                .overlay(
-        //                    RoundedRectangle(cornerRadius: 20)
-        //                        .stroke(colorScheme == .dark ? Color.white : Color.black, lineWidth: 2)
-        //                )
-        //                .background(HabitzColours.ButtonColour)
-        //                .cornerRadius(20)
-        //                .buttonStyle(HabitButtonStyle())
-        //                .padding()
-        
-        //                Button(action:{
-        //                    if self.habit.Blocks[0][1] == 1 {
-        //                        self.userInfo.HabitsFailed += 1
-        //                    }
-        //                    self.deleteAlertShown = true
-        //                }){
-        //                    Text("DELETE")
-        //                        .font(.title)
-        //                        .fontWeight(.heavy)
-        //                        .foregroundColor(HabitzColours.ButtonTextColour)
-        //                        .frame(maxWidth: .infinity, minHeight: 50)
-        //                }
-        //                .alert(isPresented: $deleteAlertShown) {
-        //                    Alert(
-        //                        title: Text("Are you sure you want to delete this habit?"),
-        //                        message: Text(""),
-        //                        primaryButton: .destructive(Text("Delete")) {
-        //                            self.mutateHabit.deleteHabit(self.userInfo,habit)
-        //                            self.userInfo.objectWillChange.send()
-        //                        },
-        //                        secondaryButton: .cancel()
-        //                    )
-        //                }
-        //                .overlay(
-        //                    RoundedRectangle(cornerRadius: 20)
-        //                        .stroke(colorScheme == .dark ? Color.white : Color.black, lineWidth: 2)
-        //                )
-        //                .background(HabitzColours.ButtonColour)
-        //                .cornerRadius(20)
-        //                .buttonStyle(HabitButtonStyle())
-        //                .padding()
-    }
 }
-
+}
 //Mark: notesView **********************************************
 
-
+    
 struct notesView: View {
+    @EnvironmentObject var userInfo: UserInfo
+    @Environment(\.colorScheme) var colorScheme
+    @State private var newNotes: String = ""
+    var habit: Habit
     var body: some View {
-        Text("Current Placeholder")
+        TextEditor(text: self.$newNotes)
+            .frame(height: 150)
+            .disableAutocorrection(true)
+            .autocapitalization(.words)
+            .padding()
+
+        HStack{
+            Spacer()
+            Button(action:{
+                hideKeyboard()
+                self.habit.Notes = newNotes
+                self.userInfo.objectWillChange.send()
+            }){
+                Text("SAVE")
+                    .fontWeight(.heavy)
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
+            }
+            Spacer()
+        }
     }
 }
+
+
+#if canImport(UIKit)
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+#endif
