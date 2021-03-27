@@ -14,7 +14,7 @@ struct CreateHabitView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
-
+    
     @State private var Name: String = ""
     @State private var Motivation: String = ""
     @State private var Category = Catergories.Diet
@@ -94,18 +94,24 @@ struct CreateHabitView: View {
                         Text("Blue").foregroundColor(.blue).tag(Colours.Blue)
                     }.pickerStyle(WheelPickerStyle())
                 }
+                
+                HStack{
+                    Spacer()
+                    Button(action:{
+                        addHabit()
+                        self.presentationMode.wrappedValue.dismiss()
+                    }){
+                        Text("Save")
+                            .font(.title)
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                            .fontWeight(.bold)
+                            .frame(alignment: .center)
+                    }.edgesIgnoringSafeArea(.bottom)
+                    Spacer()
+                }
             }
         }
         
-        Button(action:{
-            addHabit()
-            self.presentationMode.wrappedValue.dismiss()
-        }){
-            Text("Save")
-                .font(.title)
-                .foregroundColor(colorScheme == .dark ? .white : .black)
-                .fontWeight(.bold)
-        }.edgesIgnoringSafeArea(.bottom)
     }
     
     func addHabit(){
