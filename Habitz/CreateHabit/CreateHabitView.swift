@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct CreateHabitView: View {
+    
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(entity: Habit.entity(),sortDescriptors: []) var habit: FetchedResults<Habit>
+    
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var userInfo: UserInfo
-    
+
     @State private var Name: String = ""
     @State private var Motivation: String = ""
     @State private var Category = Catergories.Diet
@@ -34,12 +37,8 @@ struct CreateHabitView: View {
         case Red
         case Orange
         case Purple
+        case Blue
         var id: String { self.rawValue }
-    }
-    
-    
-    var newHabit: Habit {
-        Habit(Name: self.Name,Motivation: self.Motivation,Category: self.Category.rawValue,Blocks: arrayBuilder(Int(self.Days)!),Colour: blockColour(self.Colour.rawValue), Notes: "")
     }
     
     var body: some View {
@@ -92,13 +91,14 @@ struct CreateHabitView: View {
                         Text("Red").foregroundColor(.red).tag(Colours.Red)
                         Text("Orange").foregroundColor(.orange).tag(Colours.Orange)
                         Text("Purple").foregroundColor(.purple).tag(Colours.Purple)
+                        Text("Blue").foregroundColor(.blue).tag(Colours.Blue)
                     }.pickerStyle(WheelPickerStyle())
                 }
             }
         }
         
         Button(action:{
-            userInfo.HabitArray.append(newHabit)
+            addHabit()
             self.presentationMode.wrappedValue.dismiss()
         }){
             Text("Save")
@@ -108,25 +108,23 @@ struct CreateHabitView: View {
         }.edgesIgnoringSafeArea(.bottom)
     }
     
-    func arrayBuilder(_ duration: Int) -> [[Double]]{
+    func addHabit(){
+        let newHabit = Habit(context: self.moc)
+        newHabit.name = self.Name
+        newHabit.motivation = self.Motivation
+        newHabit.category = self.Category.rawValue
+        newHabit.colour = self.Colour.rawValue
+        newHabit.blocks = self.blockBuilder(Int(self.Days)!)
+        newHabit.notes = ""
+        try? self.moc.save()
+    }
+    func blockBuilder(_ duration: Int) -> [[Double]]{
         var dayArray = [[Double]]()
         for i in 1...duration{
             dayArray.append([Double(i),0.5])
         }
         return dayArray
     }
-    
-    func blockColour(_ colour: String) -> Color {
-            if colour == "System"{
-                return Color(colorScheme == .dark ? .gray : .black)
-            }else if colour == "Red"{
-                return Color(.red)
-            }else if colour == "Orange" {
-                return Color(.orange)
-            }else{
-                return Color(.purple)
-            }
-        }
 }
 
 struct CreateHabitView_Previews: PreviewProvider {

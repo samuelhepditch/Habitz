@@ -11,26 +11,27 @@ import Combine
 //Mark: HabitView  **********************************************
 
 struct HabitView: View {
-    @EnvironmentObject var userInfo: UserInfo
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(entity: Habit.entity(),sortDescriptors: []) var habit: FetchedResults<Habit>
     var body: some View {
         ScrollView(.horizontal) {
             HStack {
-                ForEach(userInfo.HabitArray){ habit in
-                    ZStack{
+                ForEach(habit,id: \.self){ currentHabit in
+                   ZStack{
                         Form {
                             Section {
-                                titleView(habit: habit)
+                               titleView(habit: currentHabit)
                             }
-                            
+
                             Section{
                                 Text("Progress")
                                     .font(.headline)
                                     .fontWeight(.semibold)
                             }
                             Section{
-                                progressView(habit: habit)
-                                undoButtonView(habit: habit)
-                                buildButtonView(habit: habit)
+                                progressView(habit: currentHabit)
+                                undoButtonView(habit: currentHabit)
+                                buildButtonView(habit: currentHabit)
                             }
                             Section{
                                 Text("Motivation")
@@ -38,18 +39,18 @@ struct HabitView: View {
                                     .fontWeight(.semibold)
                             }
                             Section{
-                                Text(habit.Motivation)
+                                Text(currentHabit.wrappedMotivation)
                             }
-                            Section{
+                           Section{
                                 Text("Notes")
                                     .font(.headline)
                                     .fontWeight(.semibold)
                             }
                             Section{
-                                notesView(habit: habit)
+                                notesView(habit: currentHabit)
                             }
                         }
-                    }.frame(width: 410)
+                   }.frame(width: 410)
                 }
                 NewHabitView()
             }
@@ -66,9 +67,8 @@ struct HabitView_Previews: PreviewProvider {
 //Mark: titleView **********************************************
 
 struct titleView: View {
-    
+    @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var userInfo: UserInfo
     
     let mutateHabit = MutateHabit()
     
@@ -76,12 +76,12 @@ struct titleView: View {
     @State private var actionMenuActive: Bool  = false
     var body: some View{
         HStack{
-            self.mutateHabit.categoryImage(habit.Category)
+            self.mutateHabit.categoryImage(habit.wrappedCategory)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 50, height: 50)
             Spacer()
-            Text(habit.Name)
+            Text(habit.wrappedName)
                 .font(.largeTitle)
                 .fontWeight(.semibold)
             Spacer()
@@ -95,13 +95,12 @@ struct titleView: View {
                     .foregroundColor(colorScheme == .dark ? .white : .black)
             }
             .actionSheet(isPresented: $actionMenuActive, content: {
-                let Restart = ActionSheet.Button.default(Text("Restart")){
+                    let Restart = ActionSheet.Button.default(Text("Restart")){
                     self.mutateHabit.restartHabit(habit)
-                    self.userInfo.objectWillChange.send()
                 }
                 let Delete = ActionSheet.Button.default(Text("Delete")){
-                    self.mutateHabit.deleteHabit(self.userInfo,habit)
-                    self.userInfo.objectWillChange.send()
+                    self.moc.delete(habit)
+                    try? moc.save()
                 }
                 let Cancel = ActionSheet.Button.default(Text("Cancel")){
                     self.actionMenuActive = false
@@ -117,14 +116,28 @@ struct titleView: View {
 struct progressView: View {
     @Environment(\.colorScheme) var colorScheme
     var habit: Habit
+    var habitColor: Color {
+        if habit.wrappedColour == "System" {
+            return Color.black
+        }else if habit.wrappedColour == "Red"{
+            return Color.red
+        }else if habit.wrappedColour == "Orange"{
+            return Color.orange
+        }else if habit.wrappedColour == "Purple"{
+            return Color.purple
+        }else {
+            return Color.blue
+        }
+    }
+    
     var layout: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
     var body: some View{
         LazyVGrid(columns: layout, spacing: 10) {
-            ForEach(habit.Blocks, id: \.self){ day in
+            ForEach(habit.wrappedBlocks, id: \.self){ day in
                 ZStack{
                     Rectangle()
                         .cornerRadius(10)
-                        .foregroundColor(habit.Colour)
+                        .foregroundColor(habitColor)
                         .frame(width: 40, height: 40)
                         .opacity(day[1])
                     Text("\(Int(day[0]))")
@@ -143,20 +156,18 @@ struct undoButtonView: View {
     var habit: Habit
     @State private var deleteAlertShown = false
     @State private var successAlertShown = false
+    
     let mutateHabit = MutateHabit()
-    @EnvironmentObject var userInfo: UserInfo
     var body: some View {
         HStack{
             Spacer()
             Button(action:{
                 self.mutateHabit.undoHabit(habit)
-                self.userInfo.objectWillChange.send()
             }){
                 Text("UNDO")
                     .fontWeight(.heavy)
                     .foregroundColor(colorScheme == .dark ? .white : .black)
             }
-            .disabled(habit.Blocks[0][1] == 0.5 ? true : false)
             Spacer()
         }.padding(10)
     }
@@ -170,15 +181,14 @@ struct buildButtonView: View {
     @State private var deleteAlertShown = false
     @State private var successAlertShown = false
     let mutateHabit = MutateHabit()
-    @EnvironmentObject var userInfo: UserInfo
+
     var body: some View {
         HStack{
             Spacer()
             Button(action:{
                 self.mutateHabit.buildHabit(habit)
-                self.userInfo.objectWillChange.send()
-                if habit.Blocks[habit.Blocks.count - 1][1] == 1 {
-                    self.userInfo.HabitsBuilt += 1
+                if habit.wrappedBlocks[habit.wrappedBlocks.count - 1][1] == 1 {
+                    //habit built
                     self.successAlertShown = true
                 }
             }){
@@ -189,7 +199,6 @@ struct buildButtonView: View {
             .alert(isPresented: $successAlertShown) {
                 Alert(title: Text("Congrats!\nYou built a new habit.").font(.title), message: Text(""), dismissButton: .default(Text("OK")){
                     self.mutateHabit.restartHabit(habit)
-                    self.userInfo.objectWillChange.send()
                 })
             }
             Spacer()
@@ -200,7 +209,7 @@ struct buildButtonView: View {
 
     
 struct notesView: View {
-    @EnvironmentObject var userInfo: UserInfo
+    @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var colorScheme
     @State private var newNotes: String = ""
     var habit: Habit
@@ -210,13 +219,16 @@ struct notesView: View {
             .disableAutocorrection(true)
             .autocapitalization(.words)
             .padding()
+            .onAppear{
+                self.newNotes = habit.wrappedNotes
+            }
 
         HStack{
             Spacer()
             Button(action:{
                 hideKeyboard()
-                self.habit.Notes = newNotes
-                self.userInfo.objectWillChange.send()
+                habit.notes = self.newNotes
+                try? self.moc.save()
             }){
                 Text("SAVE")
                     .fontWeight(.heavy)

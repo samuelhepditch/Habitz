@@ -9,13 +9,15 @@ import Foundation
 import SwiftUI
 
 struct MutateHabit {
+    @Environment(\.managedObjectContext) var moc
     
     func buildHabit(_ habit: Habit) {
         var built = false
         var index = 0
         while(!built){
-            if habit.Blocks[index][1] == 0.5{
-                habit.Blocks[index][1] = 1
+            if habit.wrappedBlocks[index][1] == 0.5{
+                habit.blocks![index][1] = 1
+                try? self.moc.save()
                 built = true
             }else{
                 index += 1
@@ -25,18 +27,22 @@ struct MutateHabit {
     
     func undoHabit(_ habit: Habit) {
         var undone = false
-        var index = habit.Blocks.count - 1
-        while(!undone){
-            if habit.Blocks[index][1] == 1.0{
-                habit.Blocks[index][1] = 0.5
-                undone = true
-            }else{
-                index -= 1
+        var index = habit.wrappedBlocks.count - 1
+        if (habit.wrappedBlocks[0][1] == 1.0) {
+            while(!undone){
+                if habit.wrappedBlocks[index][1] == 1.0{
+                    habit.blocks![index][1] = 0.5
+                    try? self.moc.save()
+                    undone = true
+                }else{
+                    index -= 1
+                }
             }
         }
     }
     
     func categoryImage(_ category: String) -> Image {
+        print(category)
         if category == "Diet" {
             return Image(systemName: "mouth")
         }else if category == "Fitness"{
@@ -53,28 +59,28 @@ struct MutateHabit {
     }
     
     func restartHabit(_ habit: Habit) {
-        let arraySize = habit.Blocks.count
+        let arraySize = habit.wrappedBlocks.count
         for i in 0..<arraySize {
-            habit.Blocks[i][1] = 0.5
+          habit.blocks![i][1] = 0.5
         }
     }
     
-    func deleteHabit(_ info: UserInfo,_ habit: Habit) {
+    func deleteHabit(habit: Habit) {
         
-        if habit.Blocks[0][1] == 1 {
-            info.HabitsFailed += 1
+        if habit.wrappedBlocks[0][1] == 1 {
+          // info.HabitsFailed += 1
         }
         
         var index = 0
         var found = false
         
-        while(!found){
-            if info.HabitArray[index].Name == habit.Name{
-                found = true
-            }else{
-                index += 1
-            }
+      //  while(!found){
+         //   if info.HabitArray[index].Name == habit.Name{
+            //    found = true
+          //  }else{
+               // index += 1
+         //   }
         }
-        info.HabitArray.remove(at: index)
+        //info.HabitArray.remove(at: index)
     }
-}
+
