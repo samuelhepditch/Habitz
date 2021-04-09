@@ -16,10 +16,26 @@ struct SettingsView: View {
                 .onChange(of: self.darkModeEnabled) { enabled in
                     UserStorageUtil.store(enabled, key: UserStorageUtil.theme)
                     theme.darkMode = enabled
+            }
+            Button(action: ShareButton) {
+                HStack{
+                    Text("Share")
+                    Spacer()
+                    Image(systemName: "square.and.arrow.up")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(theme.darkMode ? .white : .black)
                 }
+            }
         }
         .navigationBarHidden(true)
         .font(.headline)
+    }
+    
+    func ShareButton() {
+        let shareView = UIActivityViewController(activityItems: ["Start building Habitz with me."], applicationActivities: nil)
+        UIApplication.shared.windows.first?.rootViewController?.present(shareView, animated: true, completion: nil)
     }
 }
 

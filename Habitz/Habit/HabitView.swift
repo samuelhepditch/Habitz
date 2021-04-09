@@ -35,7 +35,7 @@ struct HabitView: View {
                             Section{
                                 progressView(habit: currentHabit)
                                 undoButtonView(habit: currentHabit)
-                                buildButtonView(animate: self.$animate, habit: currentHabit)
+                                buildButtonView(habit: currentHabit)
                             }
                             Section{
                                 Text("Motivation")
