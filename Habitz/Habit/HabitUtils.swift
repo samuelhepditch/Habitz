@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct MutateHabit {
+struct HabitUtils {
     @Environment(\.managedObjectContext) var moc
     
     func buildHabit(_ habit: Habit) {
@@ -42,7 +42,6 @@ struct MutateHabit {
     }
     
     func categoryImage(_ category: String) -> Image {
-        print(category)
         if category == "Diet" {
             return Image(systemName: "mouth")
         }else if category == "Fitness"{
@@ -83,4 +82,5 @@ struct MutateHabit {
         }
         //info.HabitArray.remove(at: index)
     }
+
 

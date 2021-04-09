@@ -8,21 +8,30 @@
 import SwiftUI
 
 struct ControlView: View {
+    @StateObject var theme = Theme()
     var body: some View {
-        TabView {
-            InsightView()
-                .tabItem{
-                    Image(systemName: "person.fill")
-                }
-            HabitView()
-                .tabItem{
-                    Image(systemName: "hammer.fill")
-                }
-            SettingsView()
-                .tabItem{
-                    Image(systemName: "gearshape.fill")
-                }
+        NavigationView {
+            TabView {
+                InsightView()
+                    .tabItem{
+                        Image(systemName: "person")
+                        Text("Insights")
+                    }
+                HabitView()
+                    .tabItem{
+                        Image(systemName: "plus.app")
+                        Text("Habits")
+                    }
+                SettingsView()
+                    .tabItem{
+                        Image(systemName: "gearshape")
+                        Text("Settings")
+                    }
+            }
         }
+        .environmentObject(theme)
+        .preferredColorScheme(theme.darkMode == true ? .dark : .light)
+        .accentColor(theme.darkMode == true ? .white : .black)
     }
 }
 

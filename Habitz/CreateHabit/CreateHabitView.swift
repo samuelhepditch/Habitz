@@ -56,14 +56,8 @@ struct CreateHabitView: View {
                 Section {
                     TextField("Name",text: self.$Name)
                         .disableAutocorrection(true)
-                    TextField("My Motivation", text: self.$Motivation)
+                    TextField("Motivation", text: self.$Motivation)
                         .disableAutocorrection(true)
-                }
-                Section {
-                    Text("Duration")
-                        .bold()
-                }
-                Section {
                     TextField("Days",text: self.$Days)
                 }
                 Section {
@@ -122,7 +116,12 @@ struct CreateHabitView: View {
         newHabit.colour = self.Colour.rawValue
         newHabit.blocks = self.blockBuilder(Int(self.Days)!)
         newHabit.notes = ""
-        try? self.moc.save()
+        do {
+            try self.moc.save()
+        } catch{
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
     }
     func blockBuilder(_ duration: Int) -> [[Double]]{
         var dayArray = [[Double]]()

@@ -16,6 +16,7 @@ struct InsightView: View {
                 Text("Habit Insights")
             }
         }
+        .navigationBarHidden(true)
     }
 }
 

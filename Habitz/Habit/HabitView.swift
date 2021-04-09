@@ -12,8 +12,12 @@ import Combine
 
 struct HabitView: View {
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(entity: Habit.entity(),sortDescriptors: []) var habit: FetchedResults<Habit>
+    @FetchRequest(entity: Habit.entity(),sortDescriptors: [
+        NSSortDescriptor(keyPath: \Habit.name, ascending: true)
+    ]) var habit: FetchedResults<Habit>
+    let count = 100
     var body: some View {
+        ZStack{
         ScrollView(.horizontal) {
             HStack {
                 ForEach(habit,id: \.self){ currentHabit in
@@ -31,7 +35,7 @@ struct HabitView: View {
                             Section{
                                 progressView(habit: currentHabit)
                                 undoButtonView(habit: currentHabit)
-                                buildButtonView(habit: currentHabit)
+                                buildButtonView(animate: self.$animate, habit: currentHabit)
                             }
                             Section{
                                 Text("Motivation")
@@ -55,6 +59,8 @@ struct HabitView: View {
                 NewHabitView()
             }
         }
+        }
+        .navigationBarHidden(true)
     }
 }
 
@@ -70,20 +76,19 @@ struct titleView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var colorScheme
     
-    let mutateHabit = MutateHabit()
+    let habitUtils = HabitUtils()
     
     var habit: Habit
     @State private var actionMenuActive: Bool  = false
     var body: some View{
         HStack{
-            self.mutateHabit.categoryImage(habit.wrappedCategory)
+            self.habitUtils.categoryImage(habit.wrappedCategory)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 50, height: 50)
             Spacer()
             Text(habit.wrappedName)
-                .font(.largeTitle)
-                .fontWeight(.semibold)
+                .fontWeight(.heavy)
             Spacer()
             Button(action:{
                 self.actionMenuActive = true
@@ -96,7 +101,7 @@ struct titleView: View {
             }
             .actionSheet(isPresented: $actionMenuActive, content: {
                     let Restart = ActionSheet.Button.default(Text("Restart")){
-                    self.mutateHabit.restartHabit(habit)
+                    self.habitUtils.restartHabit(habit)
                 }
                 let Delete = ActionSheet.Button.default(Text("Delete")){
                     self.moc.delete(habit)
@@ -157,12 +162,12 @@ struct undoButtonView: View {
     @State private var deleteAlertShown = false
     @State private var successAlertShown = false
     
-    let mutateHabit = MutateHabit()
+    let habitUtils = HabitUtils()
     var body: some View {
         HStack{
             Spacer()
             Button(action:{
-                self.mutateHabit.undoHabit(habit)
+                self.habitUtils.undoHabit(habit)
             }){
                 Text("UNDO")
                     .fontWeight(.heavy)
@@ -180,13 +185,13 @@ struct buildButtonView: View {
     var habit: Habit
     @State private var deleteAlertShown = false
     @State private var successAlertShown = false
-    let mutateHabit = MutateHabit()
+    let habitUtils = HabitUtils()
 
     var body: some View {
         HStack{
             Spacer()
             Button(action:{
-                self.mutateHabit.buildHabit(habit)
+                self.habitUtils.buildHabit(habit)
                 if habit.wrappedBlocks[habit.wrappedBlocks.count - 1][1] == 1 {
                     //habit built
                     self.successAlertShown = true
@@ -198,7 +203,7 @@ struct buildButtonView: View {
             }
             .alert(isPresented: $successAlertShown) {
                 Alert(title: Text("Congrats!\nYou built a new habit.").font(.title), message: Text(""), dismissButton: .default(Text("OK")){
-                    self.mutateHabit.restartHabit(habit)
+                    self.habitUtils.restartHabit(habit)
                 })
             }
             Spacer()
@@ -226,9 +231,9 @@ struct notesView: View {
         HStack{
             Spacer()
             Button(action:{
-                hideKeyboard()
                 habit.notes = self.newNotes
                 try? self.moc.save()
+                hideKeyboard()
             }){
                 Text("SAVE")
                     .fontWeight(.heavy)
@@ -239,7 +244,6 @@ struct notesView: View {
     }
 }
 
-
 #if canImport(UIKit)
 extension View {
     func hideKeyboard() {
@@ -247,3 +251,4 @@ extension View {
     }
 }
 #endif
+

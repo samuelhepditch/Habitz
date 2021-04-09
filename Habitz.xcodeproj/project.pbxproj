@@ -23,7 +23,10 @@
 		69A0036225F52D200018C0F0 /* NewHabitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0036125F52D200018C0F0 /* NewHabitButton.swift */; };
 		69A0036525F52D640018C0F0 /* NewHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0036425F52D640018C0F0 /* NewHabitView.swift */; };
 		69A0037A25F52F810018C0F0 /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0037925F52F810018C0F0 /* ControlView.swift */; };
-		69F5642C25F5652A000D6A33 /* MutateHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F5642B25F5652A000D6A33 /* MutateHabit.swift */; };
+		69BCD98C261FEE0300372005 /* HabitUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BCD98B261FEE0300372005 /* HabitUtils.swift */; };
+		69BCD990261FEEB700372005 /* UserStorageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BCD98F261FEEB700372005 /* UserStorageUtil.swift */; };
+		69BCD998261FF07900372005 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BCD997261FF07900372005 /* Theme.swift */; };
+		69BCD99C261FF39D00372005 /* Confetti.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BCD99B261FF39D00372005 /* Confetti.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,7 +48,10 @@
 		69A0036125F52D200018C0F0 /* NewHabitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitButton.swift; sourceTree = "<group>"; };
 		69A0036425F52D640018C0F0 /* NewHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitView.swift; sourceTree = "<group>"; };
 		69A0037925F52F810018C0F0 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
-		69F5642B25F5652A000D6A33 /* MutateHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutateHabit.swift; sourceTree = "<group>"; };
+		69BCD98B261FEE0300372005 /* HabitUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitUtils.swift; sourceTree = "<group>"; };
+		69BCD98F261FEEB700372005 /* UserStorageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStorageUtil.swift; sourceTree = "<group>"; };
+		69BCD997261FF07900372005 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		69BCD99B261FF39D00372005 /* Confetti.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confetti.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				691600782606E98C00DEF042 /* HabitButton.swift */,
+				69BCD99B261FF39D00372005 /* Confetti.swift */,
 			);
 			path = UIElements;
 			sourceTree = "<group>";
@@ -88,7 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				69A0035E25F52D130018C0F0 /* HabitView.swift */,
-				69F5642B25F5652A000D6A33 /* MutateHabit.swift */,
+				69BCD98B261FEE0300372005 /* HabitUtils.swift */,
 			);
 			path = Habit;
 			sourceTree = "<group>";
@@ -137,6 +144,7 @@
 				6953939025F531F500D50D59 /* Settings */,
 				698B05AD260FC67C00F7AB3B /* Model */,
 				69A0036725F52D9D0018C0F0 /* Shared */,
+				69BCD98E261FEEA900372005 /* Utils */,
 				69A0034025F52B100018C0F0 /* AppDelegate.swift */,
 				69A0034225F52B100018C0F0 /* SceneDelegate.swift */,
 				69A0034925F52B110018C0F0 /* Assets.xcassets */,
@@ -159,6 +167,7 @@
 		69A0036725F52D9D0018C0F0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				69BCD997261FF07900372005 /* Theme.swift */,
 				6916006F2606DCB400DEF042 /* UIElements */,
 			);
 			path = Shared;
@@ -178,6 +187,14 @@
 				69A0037925F52F810018C0F0 /* ControlView.swift */,
 			);
 			path = Control;
+			sourceTree = "<group>";
+		};
+		69BCD98E261FEEA900372005 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				69BCD98F261FEEB700372005 /* UserStorageUtil.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,14 +277,17 @@
 				69A0037A25F52F810018C0F0 /* ControlView.swift in Sources */,
 				69A0036525F52D640018C0F0 /* NewHabitView.swift in Sources */,
 				69A0034325F52B100018C0F0 /* SceneDelegate.swift in Sources */,
+				69BCD98C261FEE0300372005 /* HabitUtils.swift in Sources */,
 				69A0035B25F52D080018C0F0 /* CreateHabitView.swift in Sources */,
+				69BCD990261FEEB700372005 /* UserStorageUtil.swift in Sources */,
+				69BCD998261FF07900372005 /* Theme.swift in Sources */,
 				69A0035F25F52D130018C0F0 /* HabitView.swift in Sources */,
 				698B05AA260FC67900F7AB3B /* Habit+CoreDataClass.swift in Sources */,
 				6953939225F5320900D50D59 /* SettingsView.swift in Sources */,
-				69F5642C25F5652A000D6A33 /* MutateHabit.swift in Sources */,
 				698B05AB260FC67900F7AB3B /* Habit+CoreDataProperties.swift in Sources */,
 				6916006D2606D87E00DEF042 /* InsightView.swift in Sources */,
 				69A0036225F52D200018C0F0 /* NewHabitButton.swift in Sources */,
+				69BCD99C261FF39D00372005 /* Confetti.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +431,7 @@
 				DEVELOPMENT_TEAM = 999U7X78VH;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Habitz/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -432,6 +453,7 @@
 				DEVELOPMENT_TEAM = 999U7X78VH;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Habitz/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
