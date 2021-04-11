@@ -22,6 +22,7 @@ struct ControlView: View {
                         Image(systemName: "plus.app")
                         Text("Habits")
                     }
+                    .environmentObject(theme)
                 SettingsView()
                     .tabItem{
                         Image(systemName: "gearshape")

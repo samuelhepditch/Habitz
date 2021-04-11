@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CreateHabitView: View {
+    @EnvironmentObject var theme: Theme
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(entity: Habit.entity(),sortDescriptors: []) var habit: FetchedResults<Habit>
     @Environment(\.colorScheme) var colorScheme
@@ -102,7 +103,7 @@ struct CreateHabitView: View {
                 }
             }
         }
-        .preferredColorScheme(theme.darkMode == true ? .dark : .light)
+        .preferredColorScheme(theme.darkMode ? .dark : .light)
     }
     
     func addHabit(){

@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct NewHabitView: View {
-    
+    @EnvironmentObject var theme: Theme
     var body: some View {
         ZStack{
             Color(.systemBackground)
                 .edgesIgnoringSafeArea(.all)
             NewHabitButton()
+                .environmentObject(theme)
         }.frame(width: 400)
+        .environmentObject(theme)
     }
 }
 

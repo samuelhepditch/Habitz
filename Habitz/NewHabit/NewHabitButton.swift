@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct NewHabitButton: View {
+    @EnvironmentObject var theme: Theme
     @Environment(\.colorScheme) var colorScheme
     @State private var CreateHabitViewActive: Bool = false
     var body: some View {
+        VStack{
             Button(action:{
                 CreateHabitViewActive.toggle()
             }){
@@ -29,8 +31,11 @@ struct NewHabitButton: View {
             .buttonStyle(HabitButtonStyle())
             .sheet(isPresented: $CreateHabitViewActive){
                 CreateHabitView()
+                    .environmentObject(theme)
             }
         }
+    }
+    
 }
 
 

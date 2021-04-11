@@ -11,6 +11,7 @@ import Combine
 //Mark: HabitView  **********************************************
 
 struct HabitView: View {
+    @EnvironmentObject var theme: Theme
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(entity: Habit.entity(),sortDescriptors: [
         NSSortDescriptor(keyPath: \Habit.name, ascending: true)
@@ -57,6 +58,7 @@ struct HabitView: View {
                    }.frame(width: 410)
                 }
                 NewHabitView()
+                    .environmentObject(theme)
             }
         }
             ForEach(1..<100, id: \.self){ _ in
