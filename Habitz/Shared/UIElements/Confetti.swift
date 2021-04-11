@@ -16,10 +16,10 @@ struct Movement{
 }
 
 struct Confetti: View{
-    @Binding var animate:Bool
+    @Binding var animate: Bool
     @State var movement = Movement(x: 0, y: 0, z: 1, opacity: 0)
     
-
+    
     var body: some View{
         ConfettiView()
             .frame(width: 50, height: 50, alignment: .center)
@@ -27,31 +27,35 @@ struct Confetti: View{
             .scaleEffect(movement.z)
             .opacity(movement.opacity)
             .onChange(of: animate) { _ in
+                if animate {
                 withAnimation(Animation.easeOut(duration: 0.4)) {
                     movement.opacity = 1
-                    movement.x = CGFloat.random(in: -150...150)
-                    movement.y = -300 * CGFloat.random(in: 0.7...1)
+                    movement.x = CGFloat.random(in: -160...160)
+                    movement.y = -300 * CGFloat.random(in: 0.4...1)
                 }
-
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                     withAnimation(Animation.easeIn(duration: 3)) {
                         movement.y = 200
-                        movement.opacity = 0.0
+                        movement.opacity = 0
                     }
                 }
-        }
+            }
+            }
     }
 }
+
 
 struct ConfettiView: View {
     @State var animate = false
     @State var xSpeed = Double.random(in: 0.7...2)
     @State var zSpeed = Double.random(in: 1...2)
     @State var anchor = CGFloat.random(in: 0...1).rounded()
+    let rndColour = Int.random(in: 1...3)
     
     var body: some View {
         Rectangle()
-            .foregroundColor(.red)
+            .foregroundColor(rndColour > 1 ? (rndColour == 2 ? .red : .blue) : .green)
             .frame(width: 20, height: 20, alignment: .center)
             .onAppear(perform: { animate = true })
             .rotation3DEffect(.degrees(animate ? 360:0), axis: (x: 1, y: 0, z: 0))
@@ -60,3 +64,5 @@ struct ConfettiView: View {
             .animation(Animation.linear(duration: zSpeed).repeatForever(autoreverses: false), value: animate)
     }
 }
+
+

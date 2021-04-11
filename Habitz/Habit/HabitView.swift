@@ -15,7 +15,7 @@ struct HabitView: View {
     @FetchRequest(entity: Habit.entity(),sortDescriptors: [
         NSSortDescriptor(keyPath: \Habit.name, ascending: true)
     ]) var habit: FetchedResults<Habit>
-    let count = 100
+    @State private var habitBuilt = false
     var body: some View {
         ZStack{
         ScrollView(.horizontal) {
@@ -35,7 +35,7 @@ struct HabitView: View {
                             Section{
                                 progressView(habit: currentHabit)
                                 undoButtonView(habit: currentHabit)
-                                buildButtonView(habit: currentHabit)
+                                buildButtonView(habit: currentHabit, habitBuilt: $habitBuilt)
                             }
                             Section{
                                 Text("Motivation")
@@ -59,6 +59,9 @@ struct HabitView: View {
                 NewHabitView()
             }
         }
+            ForEach(1..<100, id: \.self){ _ in
+                Confetti(animate: $habitBuilt)
+            }
         }
         .navigationBarHidden(true)
     }
@@ -184,31 +187,32 @@ struct buildButtonView: View {
     @Environment(\.colorScheme) var colorScheme
     var habit: Habit
     @State private var deleteAlertShown = false
-    @State private var successAlertShown = false
+    @Binding var habitBuilt: Bool
     let habitUtils = HabitUtils()
 
     var body: some View {
-        HStack{
-            Spacer()
-            Button(action:{
-                self.habitUtils.buildHabit(habit)
-                if habit.wrappedBlocks[habit.wrappedBlocks.count - 1][1] == 1 {
-                    //habit built
-                    self.successAlertShown = true
+        ZStack{
+            HStack{
+                Spacer()
+                Button(action:{
+                    self.habitUtils.buildHabit(habit)
+                    if habit.wrappedBlocks[habit.wrappedBlocks.count - 1][1] == 1 {
+                        self.habitBuilt = true
+                    }
+                }){
+                    Text("BUILD")
+                        .fontWeight(.heavy)
+                        .foregroundColor(colorScheme == .dark ? .white : .black)
                 }
-            }){
-                Text("BUILD")
-                    .fontWeight(.heavy)
-                    .foregroundColor(colorScheme == .dark ? .white : .black)
-            }
-            .alert(isPresented: $successAlertShown) {
-                Alert(title: Text("Congrats!\nYou built a new habit.").font(.title), message: Text(""), dismissButton: .default(Text("OK")){
-                    self.habitUtils.restartHabit(habit)
-                })
-            }
-            Spacer()
-        }.padding(10)
-}
+                .alert(isPresented: $habitBuilt) {
+                    Alert(title: Text("Congrats!\nYou built a new habit.").font(.title), message: Text(""), dismissButton: .default(Text("OK")){
+                        self.habitUtils.restartHabit(habit)
+                    })
+                }
+                Spacer()
+            }.padding(10)
+        }
+    }
 }
 //Mark: notesView **********************************************
 

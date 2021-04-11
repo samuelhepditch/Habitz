@@ -8,13 +8,10 @@
 import SwiftUI
 
 struct CreateHabitView: View {
-    
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(entity: Habit.entity(),sortDescriptors: []) var habit: FetchedResults<Habit>
-    
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
-    
     @State private var Name: String = ""
     @State private var Motivation: String = ""
     @State private var Category = Catergories.Diet
@@ -105,7 +102,7 @@ struct CreateHabitView: View {
                 }
             }
         }
-        
+        .preferredColorScheme(theme.darkMode == true ? .dark : .light)
     }
     
     func addHabit(){
