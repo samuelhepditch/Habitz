@@ -63,24 +63,5 @@ struct HabitUtils {
           habit.blocks![i][1] = 0.5
         }
     }
-    
-    func deleteHabit(habit: Habit) {
-        
-        if habit.wrappedBlocks[0][1] == 1 {
-          // info.HabitsFailed += 1
-        }
-        
-        var index = 0
-        var found = false
-        
-      //  while(!found){
-         //   if info.HabitArray[index].Name == habit.Name{
-            //    found = true
-          //  }else{
-               // index += 1
-         //   }
-        }
-        //info.HabitArray.remove(at: index)
-    }
 
-
+}

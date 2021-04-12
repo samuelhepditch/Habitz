@@ -61,9 +61,10 @@ struct HabitView: View {
                     .environmentObject(theme)
             }
         }
-            ForEach(1..<100, id: \.self){ _ in
-                Confetti(animate: $habitBuilt)
-            }
+        ForEach(1..<400, id: \.self){ _ in
+            Confetti(animate: $habitBuilt)
+                .position(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.maxY - 100)
+        }
         }
         .navigationBarHidden(true)
     }
@@ -90,7 +91,7 @@ struct titleView: View {
             self.habitUtils.categoryImage(habit.wrappedCategory)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 50, height: 50)
+                .frame(width: 40, height: 40)
             Spacer()
             Text(habit.wrappedName)
                 .fontWeight(.heavy)

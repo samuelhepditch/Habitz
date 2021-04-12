@@ -18,6 +18,7 @@ struct CreateHabitView: View {
     @State private var Category = Catergories.Diet
     @State private var Colour = Colours.System
     @State private var Days: String = ""
+    @State private var errorMessage: String = ""
     
     
     enum Catergories: String, CaseIterable, Identifiable {
@@ -57,6 +58,7 @@ struct CreateHabitView: View {
                     TextField("Motivation", text: self.$Motivation)
                         .disableAutocorrection(true)
                     TextField("Days",text: self.$Days)
+                        .keyboardType(.numberPad)
                 }
                 Section {
                     Text("Category")
@@ -87,11 +89,21 @@ struct CreateHabitView: View {
                     }.pickerStyle(WheelPickerStyle())
                 }
                 
+                if errorMessage != "" {
+                    Section {
+                        Text(self.errorMessage)
+                            .font(.headline)
+                            .foregroundColor(.red)
+                    }
+                }
+                
                 HStack{
                     Spacer()
                     Button(action:{
-                        addHabit()
-                        self.presentationMode.wrappedValue.dismiss()
+                        if validEntry() {
+                            addHabit()
+                            self.presentationMode.wrappedValue.dismiss()
+                        }
                     }){
                         Text("Save")
                             .font(.title)
@@ -114,12 +126,18 @@ struct CreateHabitView: View {
         newHabit.colour = self.Colour.rawValue
         newHabit.blocks = self.blockBuilder(Int(self.Days)!)
         newHabit.notes = ""
-        do {
-            try self.moc.save()
-        } catch{
-            let nserror = error as NSError
-            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-        }
+        print("----------------------------------")
+        print("Habit Information\n")
+        print("----------------------------------")
+        print("Name: \(String(describing: newHabit.name)) \n")
+        print("Motivation: \(String(describing: newHabit.motivation)) \n")
+        print("Category: \(String(describing: newHabit.category)) \n")
+        print("Colour: \(String(describing: newHabit.colour)) \n")
+        print("Blocks: \(String(describing: newHabit.blocks)) \n")
+        print("Notes: \(String(describing: newHabit.notes)) \n")
+        print("----------------------------------")
+        try? self.moc.save()
+
     }
     func blockBuilder(_ duration: Int) -> [[Double]]{
         var dayArray = [[Double]]()
@@ -127,6 +145,29 @@ struct CreateHabitView: View {
             dayArray.append([Double(i),0.5])
         }
         return dayArray
+    }
+    
+    func validEntry() -> Bool {
+        if self.Name != "" && self.Motivation != ""  && self.Days != "" {
+            if Int(self.Days)! < 100 {
+                return true
+            }else{
+                self.errorMessage = "Please enter a value less than 100 into the \"Days\" field."
+                return false
+            }
+        }
+        self.errorMessage = "Please complete all the required fields."
+        return false
+    }
+}
+
+extension String {
+    func capitalizingFirstLetter() -> String {
+        return prefix(1).capitalized + dropFirst()
+    }
+
+    mutating func capitalizeFirstLetter() {
+        self = self.capitalizingFirstLetter()
     }
 }
 

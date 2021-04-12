@@ -22,7 +22,8 @@ struct Confetti: View{
     
     var body: some View{
         ConfettiView()
-            .frame(width: 50, height: 50, alignment: .center)
+            .position(y: UIScreen.main.bounds.minY)
+            .frame(width: 50, height: 50)
             .offset(x: movement.x, y: movement.y)
             .scaleEffect(movement.z)
             .opacity(movement.opacity)
@@ -30,8 +31,8 @@ struct Confetti: View{
                 if animate {
                 withAnimation(Animation.easeOut(duration: 0.4)) {
                     movement.opacity = 1
-                    movement.x = CGFloat.random(in: -160...160)
-                    movement.y = -300 * CGFloat.random(in: 0.4...1)
+                    movement.x = CGFloat.random(in: (-UIScreen.main.bounds.width/2 + 50)...(UIScreen.main.bounds.width/2 - 50))
+                    movement.y = -UIScreen.main.bounds.height * CGFloat.random(in: 0.1...0.9)
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
@@ -56,7 +57,7 @@ struct ConfettiView: View {
     var body: some View {
         Rectangle()
             .foregroundColor(rndColour > 1 ? (rndColour == 2 ? .red : .blue) : .green)
-            .frame(width: 20, height: 20, alignment: .center)
+            .frame(width: 20, height: 20)
             .onAppear(perform: { animate = true })
             .rotation3DEffect(.degrees(animate ? 360:0), axis: (x: 1, y: 0, z: 0))
             .animation(Animation.linear(duration: xSpeed).repeatForever(autoreverses: false), value: animate)
