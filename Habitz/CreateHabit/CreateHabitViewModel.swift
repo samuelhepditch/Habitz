@@ -11,9 +11,6 @@ import SwiftUI
 class createHabitViewModel: ObservableObject {
     
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(entity: Habit.entity(),sortDescriptors: [
-        NSSortDescriptor(keyPath: \Habit.name, ascending: true)
-    ]) var habit: FetchedResults<Habit>
     @Published var Name: String = ""
     @Published var Motivation: String = ""
     @Published var Category = Catergories.Diet
@@ -40,28 +37,7 @@ class createHabitViewModel: ObservableObject {
         case Blue
         var id: String { self.rawValue }
     }
-    
-    func addHabit(){
-        let newHabit = Habit(context: self.moc)
-        newHabit.name = Name
-        newHabit.motivation = Motivation
-        newHabit.category = Category.rawValue
-        newHabit.colour = Colour.rawValue
-        newHabit.blocks = self.blockBuilder(Int(Days)!)
-        newHabit.notes = ""
-        print("----------------------------------")
-        print("Habit Information\n")
-        print("----------------------------------")
-        print("Name: \(String(describing: newHabit.name)) \n")
-        print("Motivation: \(String(describing: newHabit.motivation)) \n")
-        print("Category: \(String(describing: newHabit.category)) \n")
-        print("Colour: \(String(describing: newHabit.colour)) \n")
-        print("Blocks: \(String(describing: newHabit.blocks)) \n")
-        print("Notes: \(String(describing: newHabit.notes)) \n")
-        print("----------------------------------")
-        try? moc.save()
 
-    }
     func blockBuilder(_ duration: Int) -> [[Double]]{
         var dayArray = [[Double]]()
         for i in 1...duration{
@@ -72,21 +48,27 @@ class createHabitViewModel: ObservableObject {
     
     func validEntry() -> Bool {
         if Name != "" && Motivation != ""  && Days != "" {
-            if Int(Days)! < 100 {
-                return true
-            }else{
+            if !Days.isInt{
+                errorMessage = "Please enter a integer value into the \"Days\" field."
+                return false
+            }else if Int(Days)! >= 100 {
                 errorMessage = "Please enter a value less than 100 into the \"Days\" field."
                 return false
+            }else{
+                return true
             }
         }
         errorMessage = "Please complete all the required fields."
         return false
     }
-    
 }
 
 
 extension String {
+    var isInt: Bool {
+            return Int(self) != nil
+    }
+    
     func capitalizingFirstLetter() -> String {
         return prefix(1).capitalized + dropFirst()
     }

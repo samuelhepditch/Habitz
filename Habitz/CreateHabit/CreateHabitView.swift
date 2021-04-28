@@ -12,6 +12,7 @@ struct CreateHabitView: View {
     @EnvironmentObject var theme: Theme
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.managedObjectContext) var moc
     @StateObject var viewModel = createHabitViewModel()
     
     
@@ -33,7 +34,7 @@ struct CreateHabitView: View {
                     TextField("Motivation", text: self.$viewModel.Motivation)
                         .disableAutocorrection(true)
                     TextField("Days",text: self.$viewModel.Days)
-                        .keyboardType(.numberPad)
+                        
                 }
                 Section {
                     Text("Category")
@@ -76,7 +77,7 @@ struct CreateHabitView: View {
                     Spacer()
                     Button(action:{
                         if viewModel.validEntry() {
-                            viewModel.addHabit()
+                            addHabit()
                             self.presentationMode.wrappedValue.dismiss()
                         }
                     }){
@@ -92,6 +93,37 @@ struct CreateHabitView: View {
         }
         .preferredColorScheme(theme.darkMode ? .dark : .light)
     }
+    
+    
+    //MARK: required to be present in view in order to save data.
+    
+    func addHabit(){
+        let newHabit = Habit(context: self.moc)
+        newHabit.name = viewModel.Name
+        newHabit.motivation = viewModel.Motivation
+        newHabit.category = viewModel.Category.rawValue
+        newHabit.colour = viewModel.Colour.rawValue
+        newHabit.blocks = self.viewModel.blockBuilder(Int(viewModel.Days)!)
+        newHabit.notes = ""
+        print("----------------------------------")
+        print("Habit Information\n")
+        print("----------------------------------")
+        print("Name: \(String(describing: newHabit.name)) \n")
+        print("Motivation: \(String(describing: newHabit.motivation)) \n")
+        print("Category: \(String(describing: newHabit.category)) \n")
+        print("Colour: \(String(describing: newHabit.colour)) \n")
+        print("Blocks: \(String(describing: newHabit.blocks)) \n")
+        print("Notes: \(String(describing: newHabit.notes)) \n")
+        print("----------------------------------")
+        do {
+            try self.moc.save()
+        }catch{
+            print(error)
+        }
+
+    }
+
 }
+
 
 

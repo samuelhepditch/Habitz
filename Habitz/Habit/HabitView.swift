@@ -17,54 +17,55 @@ struct HabitView: View {
         NSSortDescriptor(keyPath: \Habit.name, ascending: true)
     ]) var habit: FetchedResults<Habit>
     @State private var habitBuilt = false
+    
     var body: some View {
         ZStack{
-        ScrollView(.horizontal) {
-            HStack {
-                ForEach(habit,id: \.self){ currentHabit in
-                   ZStack{
-                        Form {
-                            Section {
-                               titleView(habit: currentHabit)
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(habit,id: \.self){ currentHabit in
+                        ZStack{
+                            Form {
+                                Section {
+                                    titleView(habit: currentHabit)
+                                }
+                                
+                                Section{
+                                    Text("Progress")
+                                        .font(.headline)
+                                        .fontWeight(.semibold)
+                                }
+                                Section{
+                                    progressView(habit: currentHabit)
+                                    undoButtonView(habit: currentHabit)
+                                    buildButtonView(habit: currentHabit, habitBuilt: $habitBuilt)
+                                }
+                                Section{
+                                    Text("Motivation")
+                                        .font(.headline)
+                                        .fontWeight(.semibold)
+                                }
+                                Section{
+                                    Text(currentHabit.wrappedMotivation)
+                                }
+                                Section{
+                                    Text("Notes")
+                                        .font(.headline)
+                                        .fontWeight(.semibold)
+                                }
+                                Section{
+                                    notesView(habit: currentHabit)
+                                }
                             }
-
-                            Section{
-                                Text("Progress")
-                                    .font(.headline)
-                                    .fontWeight(.semibold)
-                            }
-                            Section{
-                                progressView(habit: currentHabit)
-                                undoButtonView(habit: currentHabit)
-                                buildButtonView(habit: currentHabit, habitBuilt: $habitBuilt)
-                            }
-                            Section{
-                                Text("Motivation")
-                                    .font(.headline)
-                                    .fontWeight(.semibold)
-                            }
-                            Section{
-                                Text(currentHabit.wrappedMotivation)
-                            }
-                           Section{
-                                Text("Notes")
-                                    .font(.headline)
-                                    .fontWeight(.semibold)
-                            }
-                            Section{
-                                notesView(habit: currentHabit)
-                            }
-                        }
-                   }.frame(width: 410)
+                        }.frame(width: 410)
+                    }
+                    NewHabitView()
+                        .environmentObject(theme)
                 }
-                NewHabitView()
-                    .environmentObject(theme)
             }
-        }
-        ForEach(1..<400, id: \.self){ _ in
-            Confetti(animate: $habitBuilt)
-                .position(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.maxY - 100)
-        }
+            ForEach(1..<400, id: \.self){ _ in
+                Confetti(animate: $habitBuilt)
+                    .position(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.maxY - 100)
+            }
         }
         .navigationBarHidden(true)
     }
@@ -106,7 +107,7 @@ struct titleView: View {
                     .foregroundColor(colorScheme == .dark ? .white : .black)
             }
             .actionSheet(isPresented: $actionMenuActive, content: {
-                    let Restart = ActionSheet.Button.default(Text("Restart")){
+                let Restart = ActionSheet.Button.default(Text("Restart")){
                     self.habitUtils.restartHabit(habit)
                 }
                 let Delete = ActionSheet.Button.default(Text("Delete")){
@@ -192,7 +193,7 @@ struct buildButtonView: View {
     @State private var deleteAlertShown = false
     @Binding var habitBuilt: Bool
     let habitUtils = HabitUtils()
-
+    
     var body: some View {
         ZStack{
             HStack{
@@ -211,6 +212,7 @@ struct buildButtonView: View {
                     Alert(title: Text("Congrats!\nYou built a new habit.").font(.title), message: Text(""), dismissButton: .default(Text("OK")){
                         self.habitUtils.restartHabit(habit)
                     })
+                    
                 }
                 Spacer()
             }.padding(10)
@@ -219,7 +221,7 @@ struct buildButtonView: View {
 }
 //Mark: notesView **********************************************
 
-    
+
 struct notesView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var colorScheme
@@ -234,7 +236,7 @@ struct notesView: View {
             .onAppear{
                 self.newNotes = habit.wrappedNotes
             }
-
+        
         HStack{
             Spacer()
             Button(action:{
@@ -249,7 +251,9 @@ struct notesView: View {
             Spacer()
         }
     }
+    
 }
+
 
 #if canImport(UIKit)
 extension View {
