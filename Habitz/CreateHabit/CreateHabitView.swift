@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct CreateHabitView: View {
+    
     @EnvironmentObject var theme: Theme
-    @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
     @StateObject var viewModel = createHabitViewModel()
-    @FetchRequest(entity: Habit.entity(),sortDescriptors: []) var habit: FetchedResults<Habit>
-
+    
     
     var body: some View {
         VStack {

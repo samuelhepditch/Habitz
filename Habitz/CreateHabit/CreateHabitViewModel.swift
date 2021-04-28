@@ -11,7 +11,9 @@ import SwiftUI
 class createHabitViewModel: ObservableObject {
     
     @Environment(\.managedObjectContext) var moc
-    
+    @FetchRequest(entity: Habit.entity(),sortDescriptors: [
+        NSSortDescriptor(keyPath: \Habit.name, ascending: true)
+    ]) var habit: FetchedResults<Habit>
     @Published var Name: String = ""
     @Published var Motivation: String = ""
     @Published var Category = Catergories.Diet
@@ -57,7 +59,7 @@ class createHabitViewModel: ObservableObject {
         print("Blocks: \(String(describing: newHabit.blocks)) \n")
         print("Notes: \(String(describing: newHabit.notes)) \n")
         print("----------------------------------")
-        try? self.moc.save()
+        try? moc.save()
 
     }
     func blockBuilder(_ duration: Int) -> [[Double]]{
