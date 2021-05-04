@@ -103,23 +103,20 @@ struct CreateHabitView: View {
         newHabit.motivation = viewModel.Motivation
         newHabit.category = viewModel.Category.rawValue
         newHabit.colour = viewModel.Colour.rawValue
-        newHabit.blocks = self.viewModel.blockBuilder(Int(viewModel.Days)!)
+        newHabit.progress = self.viewModel.blockBuilder(Int(viewModel.Days)!)
         newHabit.notes = ""
+        newHabit.cycles = "0"
         print("----------------------------------")
         print("Habit Information\n")
         print("----------------------------------")
-        print("Name: \(String(describing: newHabit.name)) \n")
-        print("Motivation: \(String(describing: newHabit.motivation)) \n")
-        print("Category: \(String(describing: newHabit.category)) \n")
-        print("Colour: \(String(describing: newHabit.colour)) \n")
-        print("Blocks: \(String(describing: newHabit.blocks)) \n")
-        print("Notes: \(String(describing: newHabit.notes)) \n")
+        print("Name: \(String(describing: newHabit.name!)) \n")
+        print("Motivation: \(String(describing: newHabit.motivation!)) \n")
+        print("Category: \(String(describing: newHabit.category!)) \n")
+        print("Colour: \(String(describing: newHabit.colour!)) \n")
+        print("Blocks: \(String(describing: newHabit.progress!)) \n")
+        print("Notes: \(String(describing: newHabit.notes!)) \n")
         print("----------------------------------")
-        do {
-            try self.moc.save()
-        }catch{
-            print(error)
-        }
+        CoreDataManager.shared.save()
 
     }
 

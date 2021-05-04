@@ -17,17 +17,19 @@ struct ControlView: View {
                         Image(systemName: "person")
                         Text("Insights")
                     }
+                    .environment(\.managedObjectContext, CoreDataManager.shared.container.viewContext)
                 HabitView()
                     .tabItem{
                         Image(systemName: "plus.app")
                         Text("Habits")
                     }
-                    .environmentObject(theme)
+                    .environment(\.managedObjectContext, CoreDataManager.shared.container.viewContext)
                 SettingsView()
                     .tabItem{
                         Image(systemName: "gearshape")
                         Text("Settings")
                     }
+                    .environment(\.managedObjectContext, CoreDataManager.shared.container.viewContext)
             }
         }
         .environmentObject(theme)

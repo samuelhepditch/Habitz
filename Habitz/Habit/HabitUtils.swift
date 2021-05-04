@@ -15,9 +15,9 @@ struct HabitUtils {
         var built = false
         var index = 0
         while(!built){
-            if habit.wrappedBlocks[index][1] == 0.5{
-                habit.blocks![index][1] = 1
-                try? self.moc.save()
+            if habit.progress![index][1] == 0.5{
+                habit.progress![index][1] = 1
+                CoreDataManager.shared.save()
                 built = true
             }else{
                 index += 1
@@ -27,12 +27,12 @@ struct HabitUtils {
     
     func undoHabit(_ habit: Habit) {
         var undone = false
-        var index = habit.wrappedBlocks.count - 1
-        if (habit.wrappedBlocks[0][1] == 1.0) {
+        var index = habit.progress!.count - 1
+        if (habit.progress![0][1] == 1.0) {
             while(!undone){
-                if habit.wrappedBlocks[index][1] == 1.0{
-                    habit.blocks![index][1] = 0.5
-                    try? self.moc.save()
+                if habit.progress![index][1] == 1.0{
+                    habit.progress![index][1] = 0.5
+                    CoreDataManager.shared.save()
                     undone = true
                 }else{
                     index -= 1
@@ -58,9 +58,9 @@ struct HabitUtils {
     }
     
     func restartHabit(_ habit: Habit) {
-        let arraySize = habit.wrappedBlocks.count
+        let arraySize = habit.progress!.count
         for i in 0..<arraySize {
-          habit.blocks![i][1] = 0.5
+          habit.progress![i][1] = 0.5
         }
     }
 

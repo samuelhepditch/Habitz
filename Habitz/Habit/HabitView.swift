@@ -45,7 +45,7 @@ struct HabitView: View {
                                         .fontWeight(.semibold)
                                 }
                                 Section{
-                                    Text(currentHabit.wrappedMotivation)
+                                    Text(currentHabit.motivation!)
                                 }
                                 Section{
                                     Text("Notes")
@@ -54,6 +54,14 @@ struct HabitView: View {
                                 }
                                 Section{
                                     notesView(habit: currentHabit)
+                                }
+                                Section{
+                                    HStack{
+                                        Text("Habit Cycles: ")
+                                        Spacer()
+                                        Text("\(currentHabit.cycles ?? "Unknown")")
+                                    }
+                                    .font(.headline)
                                 }
                             }
                         }.frame(width: 410)
@@ -89,12 +97,12 @@ struct titleView: View {
     @State private var actionMenuActive: Bool  = false
     var body: some View{
         HStack{
-            self.habitUtils.categoryImage(habit.wrappedCategory)
+            self.habitUtils.categoryImage(habit.category ?? "Unknown")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 40, height: 40)
             Spacer()
-            Text(habit.wrappedName)
+            Text(habit.name ?? "Unknown")
                 .fontWeight(.heavy)
             Spacer()
             Button(action:{
@@ -111,8 +119,7 @@ struct titleView: View {
                     self.habitUtils.restartHabit(habit)
                 }
                 let Delete = ActionSheet.Button.default(Text("Delete")){
-                    self.moc.delete(habit)
-                    try? moc.save()
+                    CoreDataManager.shared.delete(self.habit)
                 }
                 let Cancel = ActionSheet.Button.default(Text("Cancel")){
                     self.actionMenuActive = false
@@ -129,13 +136,13 @@ struct progressView: View {
     @Environment(\.colorScheme) var colorScheme
     var habit: Habit
     var habitColor: Color {
-        if habit.wrappedColour == "System" {
+        if habit.colour == "System" {
             return Color.black
-        }else if habit.wrappedColour == "Red"{
+        }else if habit.colour == "Red"{
             return Color.red
-        }else if habit.wrappedColour == "Orange"{
+        }else if habit.colour == "Orange"{
             return Color.orange
-        }else if habit.wrappedColour == "Purple"{
+        }else if habit.colour == "Purple"{
             return Color.purple
         }else {
             return Color.blue
@@ -145,7 +152,7 @@ struct progressView: View {
     var layout: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
     var body: some View{
         LazyVGrid(columns: layout, spacing: 10) {
-            ForEach(habit.wrappedBlocks, id: \.self){ day in
+            ForEach(habit.progress!, id: \.self){ day in
                 ZStack{
                     Rectangle()
                         .cornerRadius(10)
@@ -200,7 +207,11 @@ struct buildButtonView: View {
                 Spacer()
                 Button(action:{
                     self.habitUtils.buildHabit(habit)
-                    if habit.wrappedBlocks[habit.wrappedBlocks.count - 1][1] == 1 {
+                    if habit.progress![habit.progress!.count - 1][1] == 1 {
+                        if let cycles = habit.cycles {
+                            habit.cycles = "\(Int(cycles)! + 1)"
+                        }
+                        CoreDataManager.shared.save()
                         self.habitBuilt = true
                     }
                 }){
@@ -234,7 +245,7 @@ struct notesView: View {
             .autocapitalization(.words)
             .padding()
             .onAppear{
-                self.newNotes = habit.wrappedNotes
+                self.newNotes = habit.notes!
             }
         
         HStack{

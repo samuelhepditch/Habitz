@@ -19,28 +19,11 @@ extension Habit {
     @NSManaged public var name: String?
     @NSManaged public var motivation: String?
     @NSManaged public var category: String?
-    @NSManaged public var blocks: [[Double]]?
+    @NSManaged public var progress: [[Double]]?
     @NSManaged public var notes: String?
     @NSManaged public var colour: String?
+    @NSManaged public var cycles: String?
 
-    public var wrappedName: String {
-        name ?? ""
-    }
-    public var wrappedMotivation: String {
-        motivation ?? ""
-    }
-    public var wrappedCategory: String {
-        category ?? ""
-    }
-    public var wrappedBlocks: [[Double]] {
-        blocks ?? [[]]
-    }
-    public var wrappedNotes: String {
-        notes ?? ""
-    }
-    public var wrappedColour: String {
-        colour ?? ""
-    }
 }
 
 extension Habit : Identifiable {

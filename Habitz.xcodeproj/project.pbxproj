@@ -10,6 +10,7 @@
 		6916006D2606D87E00DEF042 /* InsightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6916006C2606D87E00DEF042 /* InsightView.swift */; };
 		691600792606E98C00DEF042 /* HabitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691600782606E98C00DEF042 /* HabitButton.swift */; };
 		6953939225F5320900D50D59 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6953939125F5320900D50D59 /* SettingsView.swift */; };
+		696A65632641C44200B407D5 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A65622641C44200B407D5 /* CoreDataManager.swift */; };
 		698B05AA260FC67900F7AB3B /* Habit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698B05A8260FC67900F7AB3B /* Habit+CoreDataClass.swift */; };
 		698B05AB260FC67900F7AB3B /* Habit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698B05A9260FC67900F7AB3B /* Habit+CoreDataProperties.swift */; };
 		69A0034125F52B100018C0F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0034025F52B100018C0F0 /* AppDelegate.swift */; };
@@ -34,6 +35,7 @@
 		6916006C2606D87E00DEF042 /* InsightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightView.swift; sourceTree = "<group>"; };
 		691600782606E98C00DEF042 /* HabitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitButton.swift; sourceTree = "<group>"; };
 		6953939125F5320900D50D59 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		696A65622641C44200B407D5 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		698B05A8260FC67900F7AB3B /* Habit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Habit+CoreDataClass.swift"; path = "Habitz/Model/Habit+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		698B05A9260FC67900F7AB3B /* Habit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Habit+CoreDataProperties.swift"; path = "Habitz/Model/Habit+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		69A0033D25F52B100018C0F0 /* Habitz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habitz.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,9 +113,18 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		696A65662641CF0300B407D5 /* DataManager */ = {
+			isa = PBXGroup;
+			children = (
+				696A65622641C44200B407D5 /* CoreDataManager.swift */,
+			);
+			path = DataManager;
+			sourceTree = "<group>";
+		};
 		698B05AD260FC67C00F7AB3B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				69A0034625F52B100018C0F0 /* Habitz.xcdatamodeld */,
 				698B05A8260FC67900F7AB3B /* Habit+CoreDataClass.swift */,
 				698B05A9260FC67900F7AB3B /* Habit+CoreDataProperties.swift */,
 			);
@@ -139,21 +150,21 @@
 		69A0033F25F52B100018C0F0 /* Habitz */ = {
 			isa = PBXGroup;
 			children = (
+				696A65662641CF0300B407D5 /* DataManager */,
 				69A0037325F52F0E0018C0F0 /* Control */,
 				69A0036F25F52EE00018C0F0 /* Insights */,
 				6923E35825F57A5D00F80423 /* NewHabit */,
 				6923E35725F57A5300F80423 /* CreateHabit */,
 				6923E35925F57A7000F80423 /* Habit */,
 				6953939025F531F500D50D59 /* Settings */,
-				698B05AD260FC67C00F7AB3B /* Model */,
 				69A0036725F52D9D0018C0F0 /* Shared */,
 				69BCD98E261FEEA900372005 /* Utils */,
+				698B05AD260FC67C00F7AB3B /* Model */,
 				69A0034025F52B100018C0F0 /* AppDelegate.swift */,
 				69A0034225F52B100018C0F0 /* SceneDelegate.swift */,
 				69A0034925F52B110018C0F0 /* Assets.xcassets */,
 				69A0034E25F52B110018C0F0 /* LaunchScreen.storyboard */,
 				69A0035125F52B110018C0F0 /* Info.plist */,
-				69A0034625F52B100018C0F0 /* Habitz.xcdatamodeld */,
 				69A0034B25F52B110018C0F0 /* Preview Content */,
 			);
 			path = Habitz;
@@ -277,6 +288,7 @@
 				691600792606E98C00DEF042 /* HabitButton.swift in Sources */,
 				69A0034125F52B100018C0F0 /* AppDelegate.swift in Sources */,
 				69A0034825F52B100018C0F0 /* Habitz.xcdatamodeld in Sources */,
+				696A65632641C44200B407D5 /* CoreDataManager.swift in Sources */,
 				69A0037A25F52F810018C0F0 /* ControlView.swift in Sources */,
 				69A0036525F52D640018C0F0 /* NewHabitView.swift in Sources */,
 				69A0034325F52B100018C0F0 /* SceneDelegate.swift in Sources */,
