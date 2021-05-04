@@ -22,8 +22,7 @@ struct Confetti: View{
     
     var body: some View{
         ConfettiView()
-            .position(y: UIScreen.main.bounds.minY)
-            .frame(width: 50, height: 50)
+            .position(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.maxY * 0.9)
             .offset(x: movement.x, y: movement.y)
             .scaleEffect(movement.z)
             .opacity(movement.opacity)
@@ -31,7 +30,7 @@ struct Confetti: View{
                 if animate {
                 withAnimation(Animation.easeOut(duration: 0.4)) {
                     movement.opacity = 1
-                    movement.x = CGFloat.random(in: (-UIScreen.main.bounds.width/2 + 50)...(UIScreen.main.bounds.width/2 - 50))
+                    movement.x = CGFloat.random(in: (-UIScreen.main.bounds.width / 2)...(UIScreen.main.bounds.width / 2))
                     movement.y = -UIScreen.main.bounds.height * CGFloat.random(in: 0.1...0.9)
                 }
                 

@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-//Mark: HabitView  **********************************************
+//MARK: HabitView
 
 struct HabitView: View {
     @EnvironmentObject var theme: Theme
@@ -28,7 +28,14 @@ struct HabitView: View {
                                 Section {
                                     titleView(habit: currentHabit)
                                 }
-                                
+                                Section{
+                                    HStack{
+                                        Text("Habit Cycles: ")
+                                        Spacer()
+                                        Text("\(currentHabit.cycles ?? "Unknown")")
+                                    }
+                                    .font(.headline)
+                                }
                                 Section{
                                     Text("Progress")
                                         .font(.headline)
@@ -55,14 +62,6 @@ struct HabitView: View {
                                 Section{
                                     notesView(habit: currentHabit)
                                 }
-                                Section{
-                                    HStack{
-                                        Text("Habit Cycles: ")
-                                        Spacer()
-                                        Text("\(currentHabit.cycles ?? "Unknown")")
-                                    }
-                                    .font(.headline)
-                                }
                             }
                         }.frame(width: 410)
                     }
@@ -72,7 +71,6 @@ struct HabitView: View {
             }
             ForEach(1..<400, id: \.self){ _ in
                 Confetti(animate: $habitBuilt)
-                    .position(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.maxY - 100)
             }
         }
         .navigationBarHidden(true)
@@ -85,7 +83,7 @@ struct HabitView_Previews: PreviewProvider {
     }
 }
 
-//Mark: titleView **********************************************
+//MARK: titleView
 
 struct titleView: View {
     @Environment(\.managedObjectContext) var moc
@@ -111,7 +109,7 @@ struct titleView: View {
                 Image(systemName: "ellipsis")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 30, height: 30)
+                    .frame(width: Dimensions.Width / 10, height: Dimensions.Width / 10)
                     .foregroundColor(colorScheme == .dark ? .white : .black)
             }
             .actionSheet(isPresented: $actionMenuActive, content: {
@@ -130,7 +128,7 @@ struct titleView: View {
     }
 }
 
-//Mark: progressView **********************************************
+//MARK: progressView
 
 struct progressView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -157,7 +155,7 @@ struct progressView: View {
                     Rectangle()
                         .cornerRadius(10)
                         .foregroundColor(habitColor)
-                        .frame(width: 40, height: 40)
+                        .frame(width: Dimensions.Width / 15, height: Dimensions.Width / 15)
                         .opacity(day[1])
                     Text("\(Int(day[0]))")
                         .font(.title)
@@ -168,7 +166,7 @@ struct progressView: View {
     }
 }
 
-//Mark: undoButtonView **********************************************
+//MARK: undoButtonView
 
 struct undoButtonView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -192,7 +190,7 @@ struct undoButtonView: View {
     }
 }
 
-//Mark: buildButtonView **********************************************
+//MARK: buildButtonView
 
 struct buildButtonView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -230,7 +228,8 @@ struct buildButtonView: View {
         }
     }
 }
-//Mark: notesView **********************************************
+
+//MARK: notesView
 
 
 struct notesView: View {
@@ -240,7 +239,7 @@ struct notesView: View {
     var habit: Habit
     var body: some View {
         TextEditor(text: self.$newNotes)
-            .frame(height: 150)
+            .frame(height: Dimensions.Height / 5)
             .disableAutocorrection(true)
             .autocapitalization(.words)
             .padding()
@@ -252,7 +251,7 @@ struct notesView: View {
             Spacer()
             Button(action:{
                 habit.notes = self.newNotes
-                try? self.moc.save()
+                CoreDataManager.shared.save()
                 hideKeyboard()
             }){
                 Text("SAVE")

@@ -62,6 +62,7 @@ struct HabitUtils {
         for i in 0..<arraySize {
           habit.progress![i][1] = 0.5
         }
+        CoreDataManager.shared.save()
     }
 
 }

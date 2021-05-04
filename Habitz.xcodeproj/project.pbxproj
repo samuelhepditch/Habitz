@@ -11,6 +11,7 @@
 		691600792606E98C00DEF042 /* HabitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691600782606E98C00DEF042 /* HabitButton.swift */; };
 		6953939225F5320900D50D59 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6953939125F5320900D50D59 /* SettingsView.swift */; };
 		696A65632641C44200B407D5 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A65622641C44200B407D5 /* CoreDataManager.swift */; };
+		696A656D2642119600B407D5 /* Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A656C2642119600B407D5 /* Dimensions.swift */; };
 		698B05AA260FC67900F7AB3B /* Habit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698B05A8260FC67900F7AB3B /* Habit+CoreDataClass.swift */; };
 		698B05AB260FC67900F7AB3B /* Habit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698B05A9260FC67900F7AB3B /* Habit+CoreDataProperties.swift */; };
 		69A0034125F52B100018C0F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0034025F52B100018C0F0 /* AppDelegate.swift */; };
@@ -36,6 +37,7 @@
 		691600782606E98C00DEF042 /* HabitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitButton.swift; sourceTree = "<group>"; };
 		6953939125F5320900D50D59 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		696A65622641C44200B407D5 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		696A656C2642119600B407D5 /* Dimensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dimensions.swift; sourceTree = "<group>"; };
 		698B05A8260FC67900F7AB3B /* Habit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Habit+CoreDataClass.swift"; path = "Habitz/Model/Habit+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		698B05A9260FC67900F7AB3B /* Habit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Habit+CoreDataProperties.swift"; path = "Habitz/Model/Habit+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		69A0033D25F52B100018C0F0 /* Habitz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habitz.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -182,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				69BCD997261FF07900372005 /* Theme.swift */,
+				696A656C2642119600B407D5 /* Dimensions.swift */,
 				6916006F2606DCB400DEF042 /* UIElements */,
 			);
 			path = Shared;
@@ -301,6 +304,7 @@
 				6953939225F5320900D50D59 /* SettingsView.swift in Sources */,
 				69BCB6352638EB95007AAB77 /* CreateHabitViewModel.swift in Sources */,
 				698B05AB260FC67900F7AB3B /* Habit+CoreDataProperties.swift in Sources */,
+				696A656D2642119600B407D5 /* Dimensions.swift in Sources */,
 				6916006D2606D87E00DEF042 /* InsightView.swift in Sources */,
 				69A0036225F52D200018C0F0 /* NewHabitButton.swift in Sources */,
 				69BCD99C261FF39D00372005 /* Confetti.swift in Sources */,

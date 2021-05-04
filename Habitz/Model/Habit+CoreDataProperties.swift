@@ -23,7 +23,6 @@ extension Habit {
     @NSManaged public var notes: String?
     @NSManaged public var colour: String?
     @NSManaged public var cycles: String?
-
 }
 
 extension Habit : Identifiable {
