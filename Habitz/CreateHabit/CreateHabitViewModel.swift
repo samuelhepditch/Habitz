@@ -14,7 +14,7 @@ class createHabitViewModel: ObservableObject {
     @Published var Name: String = ""
     @Published var Motivation: String = ""
     @Published var Category = Catergories.Diet
-    @Published var Colour = Colours.System
+    @Published var Colour = Colours.Green
     @Published var Days: String = ""
     @Published var errorMessage: String = ""
     
@@ -30,7 +30,7 @@ class createHabitViewModel: ObservableObject {
     
     
     enum Colours: String, CaseIterable, Identifiable {
-        case System
+        case Green
         case Red
         case Orange
         case Purple
@@ -48,17 +48,17 @@ class createHabitViewModel: ObservableObject {
     
     func validEntry() -> Bool {
         if Name != "" && Motivation != ""  && Days != "" {
-            if !Days.isInt{
-                errorMessage = "Please enter a integer value into the \"Days\" field."
+            if !Days.isInt {
+                errorMessage = "Error: Enter a integer value into the \"Days\" field."
                 return false
             }else if Int(Days)! >= 100 {
-                errorMessage = "Please enter a value less than 100 into the \"Days\" field."
+                errorMessage = "Error: Enter a value less than 100 into the \"Days\" field."
                 return false
             }else{
                 return true
             }
         }
-        errorMessage = "Please complete all the required fields."
+        errorMessage = "Error: Complete all the required fields."
         return false
     }
 }

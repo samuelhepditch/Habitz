@@ -9,11 +9,24 @@ import SwiftUI
 import Combine
 
 struct InsightView: View {
+    @Environment(\.managedObjectContext) var moc
+    
+    @FetchRequest(
+        entity: Insights.entity(),
+        sortDescriptors: []
+    ) var insights: FetchedResults<Insights>
+    
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         ZStack{
-            Color(.systemBackground)
-            VStack {
-                Text("Habit Insights")
+            Form {
+                Section {
+                    Text("Habit Insights")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(colorScheme == .dark ? .white : .black)
+                }
             }
         }
         .navigationBarHidden(true)

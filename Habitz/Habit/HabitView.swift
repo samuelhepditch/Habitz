@@ -11,11 +11,16 @@ import Combine
 //MARK: HabitView
 
 struct HabitView: View {
+    
     @EnvironmentObject var theme: Theme
+    
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(entity: Habit.entity(),sortDescriptors: [
-        NSSortDescriptor(keyPath: \Habit.name, ascending: true)
-    ]) var habit: FetchedResults<Habit>
+    
+    @FetchRequest(
+        entity: Habit.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Habit.name, ascending: true)]
+    )var habit: FetchedResults<Habit>
+    
     @State private var habitBuilt = false
     
     var body: some View {
@@ -47,41 +52,36 @@ struct HabitView: View {
                                     buildButtonView(habit: currentHabit, habitBuilt: $habitBuilt)
                                 }
                                 Section{
-                                    Text("Motivation")
-                                        .font(.headline)
-                                        .fontWeight(.semibold)
+                                    Text("Motivation").font(.headline).fontWeight(.semibold)
                                 }
                                 Section{
                                     Text(currentHabit.motivation!)
                                 }
                                 Section{
-                                    Text("Notes")
-                                        .font(.headline)
-                                        .fontWeight(.semibold)
+                                    Text("Notes").font(.headline).fontWeight(.semibold)
                                 }
                                 Section{
                                     notesView(habit: currentHabit)
                                 }
                             }
-                        }.frame(width: 410)
+                        }.frame(width: Dimensions.Width)
                     }
                     NewHabitView()
                         .environmentObject(theme)
                 }
-            }
+            }.disabled(habitBuilt)
+            
             ForEach(1..<400, id: \.self){ _ in
                 Confetti(animate: $habitBuilt)
             }
-        }
-        .navigationBarHidden(true)
+            if habitBuilt {
+                Color.secondary
+                habitBuiltView(habitBuilt: $habitBuilt)
+            }
+        }.navigationBarHidden(true)
     }
 }
 
-struct HabitView_Previews: PreviewProvider {
-    static var previews: some View {
-        HabitView()
-    }
-}
 
 //MARK: titleView
 
@@ -98,10 +98,9 @@ struct titleView: View {
             self.habitUtils.categoryImage(habit.category ?? "Unknown")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 40, height: 40)
+                .frame(width: Dimensions.Width / 12, height: Dimensions.Width / 12)
             Spacer()
-            Text(habit.name ?? "Unknown")
-                .fontWeight(.heavy)
+            Text(habit.name ?? "Unknown").fontWeight(.heavy)
             Spacer()
             Button(action:{
                 self.actionMenuActive = true
@@ -109,7 +108,7 @@ struct titleView: View {
                 Image(systemName: "ellipsis")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: Dimensions.Width / 10, height: Dimensions.Width / 10)
+                    .frame(width: Dimensions.Width / 12, height: Dimensions.Width / 12)
                     .foregroundColor(colorScheme == .dark ? .white : .black)
             }
             .actionSheet(isPresented: $actionMenuActive, content: {
@@ -122,7 +121,7 @@ struct titleView: View {
                 let Cancel = ActionSheet.Button.default(Text("Cancel")){
                     self.actionMenuActive = false
                 }
-                return ActionSheet(title: Text("Action Menu").foregroundColor(.black), buttons: [Restart,Delete,Cancel])
+                return ActionSheet(title: Text("Action Menu"), buttons: [Restart,Delete,Cancel])
             })
         }
     }
@@ -134,8 +133,8 @@ struct progressView: View {
     @Environment(\.colorScheme) var colorScheme
     var habit: Habit
     var habitColor: Color {
-        if habit.colour == "System" {
-            return Color.black
+        if habit.colour == "Green" {
+            return Color.green
         }else if habit.colour == "Red"{
             return Color.red
         }else if habit.colour == "Orange"{
@@ -155,7 +154,7 @@ struct progressView: View {
                     Rectangle()
                         .cornerRadius(10)
                         .foregroundColor(habitColor)
-                        .frame(width: Dimensions.Width / 15, height: Dimensions.Width / 15)
+                        .frame(width: Dimensions.Width / 10, height: Dimensions.Width / 10)
                         .opacity(day[1])
                     Text("\(Int(day[0]))")
                         .font(.title)
@@ -198,7 +197,6 @@ struct buildButtonView: View {
     @State private var deleteAlertShown = false
     @Binding var habitBuilt: Bool
     let habitUtils = HabitUtils()
-    
     var body: some View {
         ZStack{
             HStack{
@@ -206,6 +204,7 @@ struct buildButtonView: View {
                 Button(action:{
                     self.habitUtils.buildHabit(habit)
                     if habit.progress![habit.progress!.count - 1][1] == 1 {
+                        habitUtils.restartHabit(habit)
                         if let cycles = habit.cycles {
                             habit.cycles = "\(Int(cycles)! + 1)"
                         }
@@ -216,12 +215,6 @@ struct buildButtonView: View {
                     Text("BUILD")
                         .fontWeight(.heavy)
                         .foregroundColor(colorScheme == .dark ? .white : .black)
-                }
-                .alert(isPresented: $habitBuilt) {
-                    Alert(title: Text("Congrats!\nYou built a new habit.").font(.title), message: Text(""), dismissButton: .default(Text("OK")){
-                        self.habitUtils.restartHabit(habit)
-                    })
-                    
                 }
                 Spacer()
             }.padding(10)
@@ -262,6 +255,56 @@ struct notesView: View {
         }
     }
     
+}
+
+//MARK: habitBuiltView
+
+struct habitBuiltView: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    @Binding var habitBuilt: Bool
+    
+    var body: some View {
+            VStack{
+                    VStack{
+                        Text("🎉 Congratulations 🎉").font(.title).fontWeight(.semibold).padding(.bottom,20)
+                        Text("You built a new habit.").font(.headline).padding(.bottom, 5)
+                        Text("Keep it up!").font(.headline).padding(.bottom, 5)
+                    }
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                    .padding(30)
+                    .background(colorScheme == .dark ? Color.black : Color.white)
+                    .cornerRadius(10)
+                    .padding(.bottom, 20)
+                    
+                
+                HStack{
+                    Button(action:{
+                        self.habitBuilt = false
+                    }){
+                        Text("Exit").font(.headline).fontWeight(.semibold).foregroundColor(.red)
+                    }
+                    .padding(EdgeInsets(top: 20, leading: 30, bottom: 20, trailing: 30))
+                    .background(colorScheme == .dark ? Color.black : Color.white)
+                    .cornerRadius(10)
+                    .padding(.trailing, Dimensions.Width * 0.2)
+                    
+                    
+                    Button(action:{
+                        Share.showActivityController()
+                    }){
+                        Image(systemName: "square.and.arrow.up")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(.blue)
+                    }
+                    .padding(EdgeInsets(top: 15, leading: 30, bottom: 15, trailing: 30))
+                    .background(colorScheme == .dark ? Color.black : Color.white)
+                    .cornerRadius(10)
+                }
+            }
+    }
 }
 
 

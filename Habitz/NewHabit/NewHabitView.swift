@@ -15,7 +15,7 @@ struct NewHabitView: View {
                 .edgesIgnoringSafeArea(.all)
             NewHabitButton()
                 .environmentObject(theme)
-        }.frame(width: 400)
+        }.frame(width: Dimensions.Width)
         .environmentObject(theme)
     }
 }

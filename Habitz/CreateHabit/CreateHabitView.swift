@@ -10,7 +10,6 @@ import SwiftUI
 struct CreateHabitView: View {
     
     @EnvironmentObject var theme: Theme
-    @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.managedObjectContext) var moc
     @StateObject var viewModel = createHabitViewModel()
@@ -29,16 +28,12 @@ struct CreateHabitView: View {
                         .bold()
                 }
                 Section {
-                    TextField("Name",text: self.$viewModel.Name)
-                        .disableAutocorrection(true)
-                    TextField("Motivation", text: self.$viewModel.Motivation)
-                        .disableAutocorrection(true)
-                    TextField("Days",text: self.$viewModel.Days)
-                        
+                    TextField("Name",text: self.$viewModel.Name).disableAutocorrection(true)
+                    TextField("Motivation", text: self.$viewModel.Motivation).disableAutocorrection(true)
+                    TextField("Days",text: self.$viewModel.Days).disableAutocorrection(true)
                 }
                 Section {
-                    Text("Category")
-                        .bold()
+                    Text("Category").bold()
                 }
                 Section {
                     Picker("", selection: self.$viewModel.Category) {
@@ -52,12 +47,11 @@ struct CreateHabitView: View {
                 }
                 
                 Section {
-                    Text("Colors")
-                        .bold()
+                    Text("Colors").bold()
                 }
                 Section {
                     Picker("", selection: self.$viewModel.Colour) {
-                        Text("System").tag(createHabitViewModel.Colours.System)
+                        Text("Green").foregroundColor(.green).tag(createHabitViewModel.Colours.Green)
                         Text("Red").foregroundColor(.red).tag(createHabitViewModel.Colours.Red)
                         Text("Orange").foregroundColor(.orange).tag(createHabitViewModel.Colours.Orange)
                         Text("Purple").foregroundColor(.purple).tag(createHabitViewModel.Colours.Purple)
@@ -67,9 +61,7 @@ struct CreateHabitView: View {
                 
                 if viewModel.errorMessage != "" {
                     Section {
-                        Text(self.viewModel.errorMessage)
-                            .font(.headline)
-                            .foregroundColor(.red)
+                        Text(self.viewModel.errorMessage).font(.headline).foregroundColor(.red)
                     }
                 }
                 
@@ -83,7 +75,7 @@ struct CreateHabitView: View {
                     }){
                         Text("Save")
                             .font(.title)
-                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                            .foregroundColor(theme.darkMode == true ? .white : .black)
                             .fontWeight(.bold)
                             .frame(alignment: .center)
                     }.edgesIgnoringSafeArea(.bottom)

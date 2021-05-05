@@ -20,7 +20,7 @@ struct NewHabitButton: View {
                     Image(systemName: "plus.square")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 200, height: 200)
+                        .frame(width: Dimensions.Width / 2, height: Dimensions.Width / 2)
                         .foregroundColor(colorScheme == .dark ? .white : .black)
                     Text("New Habit")
                         .font(.title)

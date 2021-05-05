@@ -19,10 +19,9 @@ struct Confetti: View{
     @Binding var animate: Bool
     @State var movement = Movement(x: 0, y: 0, z: 1, opacity: 0)
     
-    
     var body: some View{
         ConfettiView()
-            .position(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.maxY * 0.9)
+            .position(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.maxY - 50)
             .offset(x: movement.x, y: movement.y)
             .scaleEffect(movement.z)
             .opacity(movement.opacity)
