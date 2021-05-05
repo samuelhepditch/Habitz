@@ -13,8 +13,6 @@
 		696A65632641C44200B407D5 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A65622641C44200B407D5 /* CoreDataManager.swift */; };
 		696A656D2642119600B407D5 /* Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A656C2642119600B407D5 /* Dimensions.swift */; };
 		696A657126422A2B00B407D5 /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A657026422A2B00B407D5 /* Share.swift */; };
-		696A65752642FED300B407D5 /* Insights+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A65742642FED300B407D5 /* Insights+CoreDataClass.swift */; };
-		696A65782642FEED00B407D5 /* Insights+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A65772642FEED00B407D5 /* Insights+CoreDataProperties.swift */; };
 		698B05AA260FC67900F7AB3B /* Habit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698B05A8260FC67900F7AB3B /* Habit+CoreDataClass.swift */; };
 		698B05AB260FC67900F7AB3B /* Habit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698B05A9260FC67900F7AB3B /* Habit+CoreDataProperties.swift */; };
 		69A0034125F52B100018C0F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0034025F52B100018C0F0 /* AppDelegate.swift */; };
@@ -28,6 +26,8 @@
 		69A0036225F52D200018C0F0 /* NewHabitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0036125F52D200018C0F0 /* NewHabitButton.swift */; };
 		69A0036525F52D640018C0F0 /* NewHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0036425F52D640018C0F0 /* NewHabitView.swift */; };
 		69A0037A25F52F810018C0F0 /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A0037925F52F810018C0F0 /* ControlView.swift */; };
+		69AB291D264308E70002F2A3 /* Insights+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69AB291B264308E70002F2A3 /* Insights+CoreDataClass.swift */; };
+		69AB291E264308E70002F2A3 /* Insights+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69AB291C264308E70002F2A3 /* Insights+CoreDataProperties.swift */; };
 		69BCB6352638EB95007AAB77 /* CreateHabitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BCB6342638EB95007AAB77 /* CreateHabitViewModel.swift */; };
 		69BCD98C261FEE0300372005 /* HabitUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BCD98B261FEE0300372005 /* HabitUtils.swift */; };
 		69BCD990261FEEB700372005 /* UserStorageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BCD98F261FEEB700372005 /* UserStorageUtil.swift */; };
@@ -42,8 +42,6 @@
 		696A65622641C44200B407D5 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		696A656C2642119600B407D5 /* Dimensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dimensions.swift; sourceTree = "<group>"; };
 		696A657026422A2B00B407D5 /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
-		696A65742642FED300B407D5 /* Insights+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Insights+CoreDataClass.swift"; sourceTree = "<group>"; };
-		696A65772642FEED00B407D5 /* Insights+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Insights+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		698B05A8260FC67900F7AB3B /* Habit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Habit+CoreDataClass.swift"; path = "Habitz/Model/Habit+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		698B05A9260FC67900F7AB3B /* Habit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Habit+CoreDataProperties.swift"; path = "Habitz/Model/Habit+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		69A0033D25F52B100018C0F0 /* Habitz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habitz.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -59,6 +57,8 @@
 		69A0036125F52D200018C0F0 /* NewHabitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitButton.swift; sourceTree = "<group>"; };
 		69A0036425F52D640018C0F0 /* NewHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitView.swift; sourceTree = "<group>"; };
 		69A0037925F52F810018C0F0 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
+		69AB291B264308E70002F2A3 /* Insights+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Insights+CoreDataClass.swift"; sourceTree = "<group>"; };
+		69AB291C264308E70002F2A3 /* Insights+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Insights+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		69BCB6342638EB95007AAB77 /* CreateHabitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHabitViewModel.swift; sourceTree = "<group>"; };
 		69BCD98B261FEE0300372005 /* HabitUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitUtils.swift; sourceTree = "<group>"; };
 		69BCD98F261FEEB700372005 /* UserStorageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStorageUtil.swift; sourceTree = "<group>"; };
@@ -135,8 +135,8 @@
 				69A0034625F52B100018C0F0 /* Habitz.xcdatamodeld */,
 				698B05A8260FC67900F7AB3B /* Habit+CoreDataClass.swift */,
 				698B05A9260FC67900F7AB3B /* Habit+CoreDataProperties.swift */,
-				696A65742642FED300B407D5 /* Insights+CoreDataClass.swift */,
-				696A65772642FEED00B407D5 /* Insights+CoreDataProperties.swift */,
+				69AB291B264308E70002F2A3 /* Insights+CoreDataClass.swift */,
+				69AB291C264308E70002F2A3 /* Insights+CoreDataProperties.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -297,18 +297,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				696A65752642FED300B407D5 /* Insights+CoreDataClass.swift in Sources */,
 				691600792606E98C00DEF042 /* HabitButton.swift in Sources */,
 				69A0034125F52B100018C0F0 /* AppDelegate.swift in Sources */,
 				69A0034825F52B100018C0F0 /* Habitz.xcdatamodeld in Sources */,
 				696A65632641C44200B407D5 /* CoreDataManager.swift in Sources */,
 				69A0037A25F52F810018C0F0 /* ControlView.swift in Sources */,
 				69A0036525F52D640018C0F0 /* NewHabitView.swift in Sources */,
-				696A65782642FEED00B407D5 /* Insights+CoreDataProperties.swift in Sources */,
 				69A0034325F52B100018C0F0 /* SceneDelegate.swift in Sources */,
+				69AB291E264308E70002F2A3 /* Insights+CoreDataProperties.swift in Sources */,
 				69BCD98C261FEE0300372005 /* HabitUtils.swift in Sources */,
 				69A0035B25F52D080018C0F0 /* CreateHabitView.swift in Sources */,
 				69BCD990261FEEB700372005 /* UserStorageUtil.swift in Sources */,
+				69AB291D264308E70002F2A3 /* Insights+CoreDataClass.swift in Sources */,
 				69BCD998261FF07900372005 /* Theme.swift in Sources */,
 				69A0035F25F52D130018C0F0 /* HabitView.swift in Sources */,
 				698B05AA260FC67900F7AB3B /* Habit+CoreDataClass.swift in Sources */,
