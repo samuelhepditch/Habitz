@@ -2,16 +2,14 @@
 //  Habit+CoreDataClass.swift
 //  Habitz
 //
-//  Created by Sam on 2021-03-27.
+//  Created by Sam on 2021-05-05.
 //
 //
 
 import Foundation
 import CoreData
 
-@objc(Habit)
+
 public class Habit: NSManagedObject {
 
 }
-
-

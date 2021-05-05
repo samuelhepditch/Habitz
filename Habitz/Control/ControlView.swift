@@ -9,27 +9,28 @@ import SwiftUI
 
 struct ControlView: View {
     @StateObject var theme = Theme()
+    let container = CoreDataManager.shared.container.viewContext
     var body: some View {
         NavigationView {
             TabView {
-                InsightView()
+                HabitInsightView()
                     .tabItem{
                         Image(systemName: "person")
                         Text("Insights")
                     }
-                    .environment(\.managedObjectContext, CoreDataManager.shared.container.viewContext)
+                    .environment(\.managedObjectContext, container)
                 HabitView()
                     .tabItem{
                         Image(systemName: "plus.app")
                         Text("Habits")
                     }
-                    .environment(\.managedObjectContext, CoreDataManager.shared.container.viewContext)
+                    .environment(\.managedObjectContext, container)
                 SettingsView()
                     .tabItem{
                         Image(systemName: "gearshape")
                         Text("Settings")
                     }
-                    .environment(\.managedObjectContext, CoreDataManager.shared.container.viewContext)
+                    .environment(\.managedObjectContext, container)
             }
         }
         .environmentObject(theme)

@@ -10,6 +10,7 @@ import Foundation
 class UserStorageUtil {
     
     static let theme = "theme"
+    static let notFirstLaunch = "notFirstLaunch"
     
     static func store(_ item: Any, key: String) {
         let userDefaults = UserDefaults.standard

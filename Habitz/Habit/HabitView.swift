@@ -19,7 +19,7 @@ struct HabitView: View {
     @FetchRequest(
         entity: Habit.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \Habit.name, ascending: true)]
-    )var habit: FetchedResults<Habit>
+    ) var habit: FetchedResults<Habit>
     
     @State private var habitBuilt = false
     
@@ -80,9 +80,8 @@ struct HabitView: View {
             }
         }.navigationBarHidden(true)
     }
+    
 }
-
-
 //MARK: titleView
 
 struct titleView: View {
@@ -192,11 +191,22 @@ struct undoButtonView: View {
 //MARK: buildButtonView
 
 struct buildButtonView: View {
+    
+    @FetchRequest(
+        entity: Insights.entity(),
+        sortDescriptors: []
+    ) var insights: FetchedResults<Insights>
+    
     @Environment(\.colorScheme) var colorScheme
+    
     var habit: Habit
+    
     @State private var deleteAlertShown = false
+    
     @Binding var habitBuilt: Bool
+    
     let habitUtils = HabitUtils()
+    
     var body: some View {
         ZStack{
             HStack{
@@ -206,6 +216,18 @@ struct buildButtonView: View {
                     if habit.progress![habit.progress!.count - 1][1] == 1 {
                         habitUtils.restartHabit(habit)
                         if let cycles = habit.cycles {
+                            if cycles == "0" {
+                                insights[0].habitsBuilt = "\(Int(insights[0].habitsBuilt!)! + 1)"
+                                switch habit.category {
+                                    case "Diet": insights[0].categoryArray![0] += 1
+                                    case "Fitness": insights[0].categoryArray![1] += 1
+                                    case "Happiness": insights[0].categoryArray![2] += 1
+                                    case "Productivity": insights[0].categoryArray![3] += 1
+                                    case "Cold Turkey": insights[0].categoryArray![4] += 1
+                                    default: insights[0].categoryArray![5] += 1 //Routine
+                                }
+                            }
+                            insights[0].totalCycles = "\(Int(insights[0].totalCycles!)! + 1)"
                             habit.cycles = "\(Int(cycles)! + 1)"
                         }
                         CoreDataManager.shared.save()
@@ -237,7 +259,7 @@ struct notesView: View {
             .autocapitalization(.words)
             .padding()
             .onAppear{
-                self.newNotes = habit.notes!
+                self.newNotes = habit.notes ?? "Unknown"
             }
         
         HStack{
@@ -265,45 +287,45 @@ struct habitBuiltView: View {
     @Binding var habitBuilt: Bool
     
     var body: some View {
+        VStack{
             VStack{
-                    VStack{
-                        Text("🎉 Congratulations 🎉").font(.title).fontWeight(.semibold).padding(.bottom,20)
-                        Text("You built a new habit.").font(.headline).padding(.bottom, 5)
-                        Text("Keep it up!").font(.headline).padding(.bottom, 5)
-                    }
-                    .foregroundColor(colorScheme == .dark ? .white : .black)
-                    .padding(30)
-                    .background(colorScheme == .dark ? Color.black : Color.white)
-                    .cornerRadius(10)
-                    .padding(.bottom, 20)
-                    
-                
-                HStack{
-                    Button(action:{
-                        self.habitBuilt = false
-                    }){
-                        Text("Exit").font(.headline).fontWeight(.semibold).foregroundColor(.red)
-                    }
-                    .padding(EdgeInsets(top: 20, leading: 30, bottom: 20, trailing: 30))
-                    .background(colorScheme == .dark ? Color.black : Color.white)
-                    .cornerRadius(10)
-                    .padding(.trailing, Dimensions.Width * 0.2)
-                    
-                    
-                    Button(action:{
-                        Share.showActivityController()
-                    }){
-                        Image(systemName: "square.and.arrow.up")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(.blue)
-                    }
-                    .padding(EdgeInsets(top: 15, leading: 30, bottom: 15, trailing: 30))
-                    .background(colorScheme == .dark ? Color.black : Color.white)
-                    .cornerRadius(10)
-                }
+                Text("🎉 Congratulations 🎉").font(.title).fontWeight(.semibold).padding(.bottom,20)
+                Text("You built a new habit.").font(.headline).padding(.bottom, 5)
+                Text("Keep it up!").font(.headline).padding(.bottom, 5)
             }
+            .foregroundColor(colorScheme == .dark ? .white : .black)
+            .padding(30)
+            .background(colorScheme == .dark ? Color.black : Color.white)
+            .cornerRadius(10)
+            .padding(.bottom, 20)
+            
+            
+            HStack{
+                Button(action:{
+                    self.habitBuilt = false
+                }){
+                    Text("Exit").font(.headline).fontWeight(.semibold).foregroundColor(.red)
+                }
+                .padding(EdgeInsets(top: 20, leading: 30, bottom: 20, trailing: 30))
+                .background(colorScheme == .dark ? Color.black : Color.white)
+                .cornerRadius(10)
+                .padding(.trailing, Dimensions.Width * 0.2)
+                
+                
+                Button(action:{
+                    Share.showActivityController()
+                }){
+                    Image(systemName: "square.and.arrow.up")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.blue)
+                }
+                .padding(EdgeInsets(top: 15, leading: 30, bottom: 15, trailing: 30))
+                .background(colorScheme == .dark ? Color.black : Color.white)
+                .cornerRadius(10)
+            }
+        }
     }
 }
 

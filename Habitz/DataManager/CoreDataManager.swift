@@ -30,8 +30,8 @@ class CoreDataManager {
                 try context.save()
                 completion(nil)
             } catch {
-                completion(error)
-                print("LOG: Changes were unsuccessfully saved.")
+                print("LOG: Changes were unsuccessfully saved.\n")
+                print("LOG: Error: \(error)")
                 return
             }
         }
