@@ -11,7 +11,7 @@ import SwiftUI
 struct HabitUtils {
     @Environment(\.managedObjectContext) var moc
     
-    func buildHabit(_ habit: Habit) {
+    static func buildHabit(_ habit: Habit) {
         var built = false
         var index = 0
         while(!built){
@@ -25,7 +25,7 @@ struct HabitUtils {
         }
     }
     
-    func undoHabit(_ habit: Habit) {
+    static func undoHabit(_ habit: Habit) {
         var undone = false
         var index = habit.progress!.count - 1
         if (habit.progress![0][1] == 1.0) {
@@ -41,7 +41,7 @@ struct HabitUtils {
         }
     }
     
-    func categoryImage(_ category: String) -> Image {
+    static func categoryImage(_ category: String) -> Image {
         if category == "Diet" {
             return Image(systemName: "mouth")
         }else if category == "Fitness"{
@@ -57,7 +57,7 @@ struct HabitUtils {
         }
     }
     
-    func restartHabit(_ habit: Habit) {
+    static func restartHabit(_ habit: Habit) {
         let arraySize = habit.progress!.count
         for i in 0..<arraySize {
           habit.progress![i][1] = 0.5

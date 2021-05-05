@@ -57,7 +57,7 @@ struct HabitInsightView: View {
                                 .foregroundColor(colorScheme == .dark ? .white : .black)
                             Spacer()
                         }
-                        CategoryGraphView(categoryArray: insights[0].categoryArray!)
+                        CategoryGraph(categoryArray: insights[0].categoryArray!)
                     }
                     
                     Section{
@@ -73,6 +73,14 @@ struct HabitInsightView: View {
                                 .foregroundColor(colorScheme == .dark ? .white : .black)
                         }
                     }
+                    
+                    Section {
+                        Text("Success Ratio")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                        SuccessRatioGraph(successRatioArray: insights[0].successArray!)
+                    }
                 }
             }
             .navigationBarHidden(true)
@@ -85,14 +93,16 @@ struct HabitInsightView: View {
                 newInsights.habitsBuilt = "0"
                 newInsights.totalCycles = "0"
                 newInsights.categoryArray = [0,0,0,0,0,0]
+                newInsights.successArray = [0,0]
                 print("----------------------------------")
                 print("Habit Insights\n")
                 print("----------------------------------")
                 print("Habits Built: \(String(describing: newInsights.habitsBuilt!)) \n")
                 print("Total Cycles: \(String(describing: newInsights.totalCycles!)) \n")
                 print("Category Array: \(String(describing: newInsights.categoryArray!)) \n")
+                print("Success Array: \(String(describing: newInsights.successArray!)) \n")
                 print("----------------------------------")
-                CoreDataManager.shared.save(){_ in
+                CoreDataManager.shared.save(){ _ in
                     self.viewModel.isInsightEntity = true
                 }
             }else{
@@ -105,9 +115,9 @@ struct HabitInsightView: View {
 }
 
 
-//MARK: category graph view
+//MARK: Category Graph
 
-struct CategoryGraphView: View {
+struct CategoryGraph: View {
     
     var categoryArray: [Int]
     var body: some View {
@@ -147,6 +157,32 @@ struct CategoryGraphView: View {
                 Rectangle()
                     .frame(width: categoryArray[5] == 0 ? 20 : HabitInsightViewModel.calcPorportion(arr: categoryArray, index: 5), height: Dimensions.Height / 75)
                     .foregroundColor(.yellow)
+            }
+        }
+    }
+}
+
+
+
+//MARK: Success Ratio Graph
+
+struct SuccessRatioGraph: View {
+    
+    var successRatioArray: [Int]
+    
+    var body: some View {
+        VStack(alignment: .leading){
+            Group {
+                Text("Failures: \(successRatioArray[0])").font(.subheadline).fontWeight(.semibold)
+                Rectangle()
+                    .frame(width: successRatioArray[0] == 0 ? 20 : HabitInsightViewModel.calcPorportion(arr: successRatioArray, index: 0), height: Dimensions.Height / 75)
+                    .foregroundColor(.red)
+            }
+            Group{
+                Text("Successes: \(successRatioArray[1])").font(.subheadline).fontWeight(.semibold)
+                Rectangle()
+                    .frame(width: successRatioArray[1] == 0 ? 20 : HabitInsightViewModel.calcPorportion(arr: successRatioArray, index: 1), height: Dimensions.Height / 75)
+                    .foregroundColor(.green)
             }
         }
     }

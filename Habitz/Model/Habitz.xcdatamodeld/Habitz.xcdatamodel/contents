@@ -12,10 +12,11 @@
     <entity name="Insights" representedClassName=".Insights" syncable="YES">
         <attribute name="categoryArray" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformerName" customClassName="[Int]"/>
         <attribute name="habitsBuilt" optional="YES" attributeType="String"/>
+        <attribute name="successArray" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformerName" customClassName="[Int]"/>
         <attribute name="totalCycles" optional="YES" attributeType="String"/>
     </entity>
     <elements>
         <element name="Habit" positionX="-18" positionY="27" width="128" height="148"/>
-        <element name="Insights" positionX="-9" positionY="90" width="128" height="88"/>
+        <element name="Insights" positionX="-9" positionY="90" width="128" height="103"/>
     </elements>
 </model>

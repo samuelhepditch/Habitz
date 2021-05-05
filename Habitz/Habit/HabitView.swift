@@ -23,6 +23,8 @@ struct HabitView: View {
     
     @State private var habitBuilt = false
     
+    @State private var isRestartAlert = false
+    
     var body: some View {
         ZStack{
             ScrollView(.horizontal) {
@@ -48,7 +50,7 @@ struct HabitView: View {
                                 }
                                 Section{
                                     progressView(habit: currentHabit)
-                                    undoButtonView(habit: currentHabit)
+                                    restartButtonView(isRestartAlert: $isRestartAlert, habit: currentHabit)
                                     buildButtonView(habit: currentHabit, habitBuilt: $habitBuilt)
                                 }
                                 Section{
@@ -64,12 +66,17 @@ struct HabitView: View {
                                     notesView(habit: currentHabit)
                                 }
                             }
+                            if isRestartAlert {
+                                Color.secondary
+                                restartAlertView(isRestartAlert: $isRestartAlert, habit: currentHabit)
+                            }
                         }.frame(width: Dimensions.Width)
                     }
                     NewHabitView()
                         .environmentObject(theme)
                 }
-            }.disabled(habitBuilt)
+            }
+            
             
             ForEach(1..<400, id: \.self){ _ in
                 Confetti(animate: $habitBuilt)
@@ -87,14 +94,11 @@ struct HabitView: View {
 struct titleView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var colorScheme
-    
-    let habitUtils = HabitUtils()
-    
     var habit: Habit
     @State private var actionMenuActive: Bool  = false
     var body: some View{
         HStack{
-            self.habitUtils.categoryImage(habit.category ?? "Unknown")
+            HabitUtils.categoryImage(habit.category ?? "Unknown")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: Dimensions.Width / 12, height: Dimensions.Width / 12)
@@ -112,7 +116,7 @@ struct titleView: View {
             }
             .actionSheet(isPresented: $actionMenuActive, content: {
                 let Restart = ActionSheet.Button.default(Text("Restart")){
-                    self.habitUtils.restartHabit(habit)
+                    HabitUtils.restartHabit(habit)
                 }
                 let Delete = ActionSheet.Button.default(Text("Delete")){
                     CoreDataManager.shared.delete(self.habit)
@@ -164,10 +168,11 @@ struct progressView: View {
     }
 }
 
-//MARK: undoButtonView
+//MARK: restartButtonView
 
-struct undoButtonView: View {
+struct restartButtonView: View {
     @Environment(\.colorScheme) var colorScheme
+    @Binding var isRestartAlert: Bool
     var habit: Habit
     @State private var deleteAlertShown = false
     @State private var successAlertShown = false
@@ -177,9 +182,9 @@ struct undoButtonView: View {
         HStack{
             Spacer()
             Button(action:{
-                self.habitUtils.undoHabit(habit)
+                isRestartAlert = true
             }){
-                Text("UNDO")
+                Text("RESTART")
                     .fontWeight(.heavy)
                     .foregroundColor(colorScheme == .dark ? .white : .black)
             }
@@ -188,7 +193,48 @@ struct undoButtonView: View {
     }
 }
 
-//MARK: buildButtonView
+//MARK: Restart Alert View
+struct restartAlertView: View {
+    @FetchRequest(
+        entity: Insights.entity(),
+        sortDescriptors: []
+    ) var insights: FetchedResults<Insights>
+    @Environment(\.colorScheme) var colorScheme
+    @Binding var isRestartAlert: Bool
+    var habit: Habit
+    var body: some View {
+        VStack{
+            Text("Are You Sure?")
+                .font(.headline)
+                .fontWeight(.semibold)
+                .padding(.bottom,10)
+            Text("Restarting a habit is considered a failure.")
+                .font(.headline)
+                .padding(.bottom, 20)
+            Rectangle()
+                .frame(width: Dimensions.Width / 1.5, height: 2)
+                .foregroundColor(colorScheme == .dark ? .white : .black)
+            Button(action:{
+                HabitUtils.restartHabit(habit)
+                insights[0].successArray![0] += 1
+                CoreDataManager.shared.save()
+                self.isRestartAlert = false
+            }){
+                Text("RESTART")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
+            }
+        }
+        .foregroundColor(colorScheme == .dark ? .white : .black)
+        .padding(10)
+        .background(colorScheme == .dark ? Color.black : Color.white)
+        .cornerRadius(10)
+    }
+}
+
+
+//MARK: Build Button View
 
 struct buildButtonView: View {
     
@@ -205,26 +251,25 @@ struct buildButtonView: View {
     
     @Binding var habitBuilt: Bool
     
-    let habitUtils = HabitUtils()
-    
     var body: some View {
         ZStack{
             HStack{
                 Spacer()
                 Button(action:{
-                    self.habitUtils.buildHabit(habit)
+                    HabitUtils.buildHabit(habit)
                     if habit.progress![habit.progress!.count - 1][1] == 1 {
-                        habitUtils.restartHabit(habit)
+                        insights[0].successArray![1] += 1
+                        HabitUtils.restartHabit(habit)
                         if let cycles = habit.cycles {
                             if cycles == "0" {
                                 insights[0].habitsBuilt = "\(Int(insights[0].habitsBuilt!)! + 1)"
                                 switch habit.category {
-                                    case "Diet": insights[0].categoryArray![0] += 1
-                                    case "Fitness": insights[0].categoryArray![1] += 1
-                                    case "Happiness": insights[0].categoryArray![2] += 1
-                                    case "Productivity": insights[0].categoryArray![3] += 1
-                                    case "Cold Turkey": insights[0].categoryArray![4] += 1
-                                    default: insights[0].categoryArray![5] += 1 //Routine
+                                case "Diet": insights[0].categoryArray![0] += 1
+                                case "Fitness": insights[0].categoryArray![1] += 1
+                                case "Happiness": insights[0].categoryArray![2] += 1
+                                case "Productivity": insights[0].categoryArray![3] += 1
+                                case "ColdTurkey": insights[0].categoryArray![4] += 1
+                                default: insights[0].categoryArray![5] += 1  //Routine
                                 }
                             }
                             insights[0].totalCycles = "\(Int(insights[0].totalCycles!)! + 1)"
@@ -244,40 +289,6 @@ struct buildButtonView: View {
     }
 }
 
-//MARK: notesView
-
-
-struct notesView: View {
-    @Environment(\.managedObjectContext) var moc
-    @Environment(\.colorScheme) var colorScheme
-    @State private var newNotes: String = ""
-    var habit: Habit
-    var body: some View {
-        TextEditor(text: self.$newNotes)
-            .frame(height: Dimensions.Height / 5)
-            .disableAutocorrection(true)
-            .autocapitalization(.words)
-            .padding()
-            .onAppear{
-                self.newNotes = habit.notes ?? "Unknown"
-            }
-        
-        HStack{
-            Spacer()
-            Button(action:{
-                habit.notes = self.newNotes
-                CoreDataManager.shared.save()
-                hideKeyboard()
-            }){
-                Text("SAVE")
-                    .fontWeight(.heavy)
-                    .foregroundColor(colorScheme == .dark ? .white : .black)
-            }
-            Spacer()
-        }
-    }
-    
-}
 
 //MARK: habitBuiltView
 
@@ -328,6 +339,42 @@ struct habitBuiltView: View {
         }
     }
 }
+
+
+//MARK: notesView
+
+struct notesView: View {
+    @Environment(\.managedObjectContext) var moc
+    @Environment(\.colorScheme) var colorScheme
+    @State private var newNotes: String = ""
+    var habit: Habit
+    var body: some View {
+        TextEditor(text: self.$newNotes)
+            .frame(height: Dimensions.Height / 5)
+            .disableAutocorrection(true)
+            .autocapitalization(.words)
+            .padding()
+            .onAppear{
+                self.newNotes = habit.notes ?? "Unknown"
+            }
+        
+        HStack{
+            Spacer()
+            Button(action:{
+                habit.notes = self.newNotes
+                CoreDataManager.shared.save()
+                hideKeyboard()
+            }){
+                Text("SAVE")
+                    .fontWeight(.heavy)
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
+            }
+            Spacer()
+        }
+    }
+    
+}
+
 
 
 #if canImport(UIKit)

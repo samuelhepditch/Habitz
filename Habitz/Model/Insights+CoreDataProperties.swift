@@ -19,7 +19,7 @@ extension Insights {
     @NSManaged public var habitsBuilt: String?
     @NSManaged public var totalCycles: String?
     @NSManaged public var categoryArray: [Int]?
-
+    @NSManaged public var successArray: [Int]?
 }
 
 extension Insights : Identifiable {
