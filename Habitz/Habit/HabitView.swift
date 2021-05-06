@@ -21,9 +21,11 @@ struct HabitView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Habit.name, ascending: true)]
     ) var habit: FetchedResults<Habit>
     
-    @State private var habitBuilt = false
-    
+    @State private var isHabitBuilt = false
+    @State private var isDeleteAlert = false
     @State private var isRestartAlert = false
+    @State private var editingHabit = ""
+    
     
     var body: some View {
         ZStack{
@@ -33,7 +35,7 @@ struct HabitView: View {
                         ZStack{
                             Form {
                                 Section {
-                                    titleView(habit: currentHabit)
+                                    TitleView(habit: currentHabit, isDeleteAlert: $isDeleteAlert, editingHabit: $editingHabit)
                                 }
                                 Section{
                                     HStack{
@@ -49,9 +51,9 @@ struct HabitView: View {
                                         .fontWeight(.semibold)
                                 }
                                 Section{
-                                    progressView(habit: currentHabit)
-                                    restartButtonView(isRestartAlert: $isRestartAlert, habit: currentHabit)
-                                    buildButtonView(habit: currentHabit, habitBuilt: $habitBuilt)
+                                    ProgressView(habit: currentHabit)
+                                    RestartButtonView(isRestartAlert: $isRestartAlert, habit: currentHabit, editingHabit: $editingHabit)
+                                    BuildButtonView(habit: currentHabit, habitBuilt: $isHabitBuilt)
                                 }
                                 Section{
                                     Text("Motivation").font(.headline).fontWeight(.semibold)
@@ -63,12 +65,15 @@ struct HabitView: View {
                                     Text("Notes").font(.headline).fontWeight(.semibold)
                                 }
                                 Section{
-                                    notesView(habit: currentHabit)
+                                    NotesView(habit: currentHabit)
                                 }
                             }
-                            if isRestartAlert {
+                            if isRestartAlert && currentHabit.name == editingHabit {
                                 Color.secondary
-                                restartAlertView(isRestartAlert: $isRestartAlert, habit: currentHabit)
+                                RestartAlertView(isRestartAlert: $isRestartAlert, habit: currentHabit)
+                            }else if isDeleteAlert && currentHabit.name == editingHabit {
+                                Color.secondary
+                                DeleteAlertView(isDeleteAlert: $isDeleteAlert, habit: currentHabit)
                             }
                         }.frame(width: Dimensions.Width)
                     }
@@ -77,25 +82,26 @@ struct HabitView: View {
                 }
             }
             
-            
             ForEach(1..<400, id: \.self){ _ in
-                Confetti(animate: $habitBuilt)
+                Confetti(animate: $isHabitBuilt)
             }
-            if habitBuilt {
+            if isHabitBuilt {
                 Color.secondary
-                habitBuiltView(habitBuilt: $habitBuilt)
+                HabitBuiltView(habitBuilt: $isHabitBuilt)
             }
         }.navigationBarHidden(true)
     }
     
 }
-//MARK: titleView
 
-struct titleView: View {
+//MARK: Title View
+
+struct TitleView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var colorScheme
     var habit: Habit
-    @State private var actionMenuActive: Bool  = false
+    @Binding var isDeleteAlert: Bool
+    @Binding var editingHabit: String
     var body: some View{
         HStack{
             HabitUtils.categoryImage(habit.category ?? "Unknown")
@@ -106,33 +112,77 @@ struct titleView: View {
             Text(habit.name ?? "Unknown").fontWeight(.heavy)
             Spacer()
             Button(action:{
-                self.actionMenuActive = true
+                self.editingHabit = habit.name ?? "Unknown"
+                self.isDeleteAlert = true
             }){
-                Image(systemName: "ellipsis")
+                Image(systemName: "multiply.circle")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: Dimensions.Width / 12, height: Dimensions.Width / 12)
+                    .frame(width: Dimensions.Width / 15, height: Dimensions.Width / 15)
                     .foregroundColor(colorScheme == .dark ? .white : .black)
             }
-            .actionSheet(isPresented: $actionMenuActive, content: {
-                let Restart = ActionSheet.Button.default(Text("Restart")){
-                    HabitUtils.restartHabit(habit)
-                }
-                let Delete = ActionSheet.Button.default(Text("Delete")){
-                    CoreDataManager.shared.delete(self.habit)
-                }
-                let Cancel = ActionSheet.Button.default(Text("Cancel")){
-                    self.actionMenuActive = false
-                }
-                return ActionSheet(title: Text("Action Menu"), buttons: [Restart,Delete,Cancel])
-            })
         }
     }
 }
 
-//MARK: progressView
+//MARK: Delete Alert View
 
-struct progressView: View {
+struct DeleteAlertView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @Binding var isDeleteAlert: Bool
+    var habit: Habit
+    var body: some View {
+        VStack{
+            VStack {
+                Text("Are You Sure?")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .padding(.bottom,10)
+                Text("You will not be able to undo this action.")
+                    .font(.headline)
+                    .padding(.bottom, 20)
+            }
+            .foregroundColor(colorScheme == .dark ? .white : .black)
+            .padding(10)
+            .background(colorScheme == .dark ? Color.black : Color.white)
+            .cornerRadius(10)
+            .padding(.bottom, 20)
+            
+            HStack {
+                Button(action:{
+                    self.isDeleteAlert = false
+                }){
+                    Text("CANCEL")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                }
+                .frame(width: 100, height: 60)
+                .background(colorScheme == .dark ? Color.black : Color.white)
+                .cornerRadius(10)
+                .padding(.trailing, Dimensions.Width * 0.2)
+                
+                Button(action:{
+                    CoreDataManager.shared.delete(habit){_ in
+                        self.isDeleteAlert = false
+                    }
+                }){
+                    Text("DELETE")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(colorScheme == .dark ? .white : .black)
+                }
+                .frame(width: 100, height: 60)
+                .background(colorScheme == .dark ? Color.black : Color.white)
+                .cornerRadius(10)
+            }
+        }
+    }
+}
+
+
+//MARK: Progress View
+
+struct ProgressView: View {
     @Environment(\.colorScheme) var colorScheme
     var habit: Habit
     var habitColor: Color {
@@ -168,20 +218,21 @@ struct progressView: View {
     }
 }
 
-//MARK: restartButtonView
 
-struct restartButtonView: View {
+//MARK: Restart Button View
+
+struct RestartButtonView: View {
     @Environment(\.colorScheme) var colorScheme
     @Binding var isRestartAlert: Bool
     var habit: Habit
     @State private var deleteAlertShown = false
     @State private var successAlertShown = false
-    
-    let habitUtils = HabitUtils()
+    @Binding var editingHabit: String
     var body: some View {
         HStack{
             Spacer()
             Button(action:{
+                editingHabit = habit.name ?? "Unknown"
                 isRestartAlert = true
             }){
                 Text("RESTART")
@@ -194,7 +245,8 @@ struct restartButtonView: View {
 }
 
 //MARK: Restart Alert View
-struct restartAlertView: View {
+
+struct RestartAlertView: View {
     @FetchRequest(
         entity: Insights.entity(),
         sortDescriptors: []
@@ -204,51 +256,65 @@ struct restartAlertView: View {
     var habit: Habit
     var body: some View {
         VStack{
-            Text("Are You Sure?")
-                .font(.headline)
-                .fontWeight(.semibold)
-                .padding(.bottom,10)
-            Text("Restarting a habit is considered a failure.")
-                .font(.headline)
-                .padding(.bottom, 20)
-            Rectangle()
-                .frame(width: Dimensions.Width / 1.5, height: 2)
-                .foregroundColor(colorScheme == .dark ? .white : .black)
-            Button(action:{
-                HabitUtils.restartHabit(habit)
-                insights[0].successArray![0] += 1
-                CoreDataManager.shared.save()
-                self.isRestartAlert = false
-            }){
-                Text("RESTART")
+            VStack {
+                Text("Are You Sure?")
                     .font(.headline)
                     .fontWeight(.semibold)
-                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                    .padding(.bottom,10)
+                Text("Restarting a habit is considered a failure.")
+                    .font(.headline)
+                    .padding(.bottom, 20)
+            }
+            .foregroundColor(colorScheme == .dark ? .white : .black)
+            .padding(10)
+            .background(colorScheme == .dark ? Color.black : Color.white)
+            .cornerRadius(10)
+            .padding(.bottom, 20)
+            
+            HStack {
+                Button(action:{
+                    self.isRestartAlert = false
+                }){
+                    Text("EXIT")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.red)
+                }
+                .frame(width: 100, height: 60)
+                .background(colorScheme == .dark ? Color.black : Color.white)
+                .cornerRadius(10)
+                .padding(.trailing, Dimensions.Width * 0.2)
+                
+                Button(action:{
+                    HabitUtils.restartHabit(habit)
+                    insights[0].successArray![0] += 1  //Add one to failure count
+                    CoreDataManager.shared.save()
+                    self.isRestartAlert = false
+                }){
+                    Text("RESTART")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(colorScheme == .dark ? .white : .black)
+                }
+                .frame(width: 100, height: 60)
+                .background(colorScheme == .dark ? Color.black : Color.white)
+                .cornerRadius(10)
             }
         }
-        .foregroundColor(colorScheme == .dark ? .white : .black)
-        .padding(10)
-        .background(colorScheme == .dark ? Color.black : Color.white)
-        .cornerRadius(10)
     }
 }
 
 
 //MARK: Build Button View
 
-struct buildButtonView: View {
-    
+struct BuildButtonView: View {
     @FetchRequest(
         entity: Insights.entity(),
         sortDescriptors: []
     ) var insights: FetchedResults<Insights>
-    
     @Environment(\.colorScheme) var colorScheme
-    
     var habit: Habit
-    
     @State private var deleteAlertShown = false
-    
     @Binding var habitBuilt: Bool
     
     var body: some View {
@@ -290,9 +356,9 @@ struct buildButtonView: View {
 }
 
 
-//MARK: habitBuiltView
+//MARK: Habit Built View
 
-struct habitBuiltView: View {
+struct HabitBuiltView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @Binding var habitBuilt: Bool
@@ -315,9 +381,9 @@ struct habitBuiltView: View {
                 Button(action:{
                     self.habitBuilt = false
                 }){
-                    Text("Exit").font(.headline).fontWeight(.semibold).foregroundColor(.red)
+                    Text("EXIT").font(.headline).fontWeight(.semibold).foregroundColor(.red)
                 }
-                .padding(EdgeInsets(top: 20, leading: 30, bottom: 20, trailing: 30))
+                .frame(width: 100, height: 60)
                 .background(colorScheme == .dark ? Color.black : Color.white)
                 .cornerRadius(10)
                 .padding(.trailing, Dimensions.Width * 0.2)
@@ -332,7 +398,7 @@ struct habitBuiltView: View {
                         .frame(width: 30, height: 30)
                         .foregroundColor(.blue)
                 }
-                .padding(EdgeInsets(top: 15, leading: 30, bottom: 15, trailing: 30))
+                .frame(width: 100, height: 60)
                 .background(colorScheme == .dark ? Color.black : Color.white)
                 .cornerRadius(10)
             }
@@ -341,9 +407,9 @@ struct habitBuiltView: View {
 }
 
 
-//MARK: notesView
+//MARK: Notes View
 
-struct notesView: View {
+struct NotesView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var colorScheme
     @State private var newNotes: String = ""
