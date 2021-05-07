@@ -3,10 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3425CB94A0B594A018DA5C2A /* Pods_Habitz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7361A2EAED821D71016D23F /* Pods_Habitz.framework */; };
+		69040AE12644BED400414F10 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69040AE02644BED400414F10 /* StoreKit.framework */; };
+		69040AEC2644CDF900414F10 /* PurchaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69040AEB2644CDF900414F10 /* PurchaseService.swift */; };
 		691600792606E98C00DEF042 /* HabitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691600782606E98C00DEF042 /* HabitButton.swift */; };
 		6953939225F5320900D50D59 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6953939125F5320900D50D59 /* SettingsView.swift */; };
 		696A65632641C44200B407D5 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A65622641C44200B407D5 /* CoreDataManager.swift */; };
@@ -37,6 +40,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		113970D90790F89E5CCAAD63 /* Pods-Habitz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Habitz.debug.xcconfig"; path = "Target Support Files/Pods-Habitz/Pods-Habitz.debug.xcconfig"; sourceTree = "<group>"; };
+		3297D5397C8BFB4956A6152D /* Pods-Habitz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Habitz.release.xcconfig"; path = "Target Support Files/Pods-Habitz/Pods-Habitz.release.xcconfig"; sourceTree = "<group>"; };
+		69040AE02644BED400414F10 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		69040AEB2644CDF900414F10 /* PurchaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseService.swift; sourceTree = "<group>"; };
 		691600782606E98C00DEF042 /* HabitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitButton.swift; sourceTree = "<group>"; };
 		6953939125F5320900D50D59 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		696A65622641C44200B407D5 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -66,6 +73,7 @@
 		69DBF80226430C05009A745C /* Insights+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Insights+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		69DBF81326430F84009A745C /* HabitInsightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitInsightView.swift; sourceTree = "<group>"; };
 		69DBF81926432831009A745C /* HabitInsightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitInsightViewModel.swift; sourceTree = "<group>"; };
+		D7361A2EAED821D71016D23F /* Pods_Habitz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Habitz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,12 +81,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69040AE12644BED400414F10 /* StoreKit.framework in Frameworks */,
+				3425CB94A0B594A018DA5C2A /* Pods_Habitz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		69040ADF2644BED400414F10 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				69040AE02644BED400414F10 /* StoreKit.framework */,
+				D7361A2EAED821D71016D23F /* Pods_Habitz.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		69040AEA2644CDEA00414F10 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				69040AEB2644CDF900414F10 /* PurchaseService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		6916006F2606DCB400DEF042 /* UIElements */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,6 +175,8 @@
 			children = (
 				69A0033F25F52B100018C0F0 /* Habitz */,
 				69A0033E25F52B100018C0F0 /* Products */,
+				69040ADF2644BED400414F10 /* Frameworks */,
+				E0C76201116D6E044AA77689 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -162,6 +191,7 @@
 		69A0033F25F52B100018C0F0 /* Habitz */ = {
 			isa = PBXGroup;
 			children = (
+				69040AEA2644CDEA00414F10 /* Services */,
 				69A0037325F52F0E0018C0F0 /* Control */,
 				69A0036F25F52EE00018C0F0 /* Insights */,
 				6923E35825F57A5D00F80423 /* NewHabit */,
@@ -226,6 +256,15 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		E0C76201116D6E044AA77689 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				113970D90790F89E5CCAAD63 /* Pods-Habitz.debug.xcconfig */,
+				3297D5397C8BFB4956A6152D /* Pods-Habitz.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -233,17 +272,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 69A0035425F52B110018C0F0 /* Build configuration list for PBXNativeTarget "Habitz" */;
 			buildPhases = (
+				47D1516DC987634CE12F1BC6 /* [CP] Check Pods Manifest.lock */,
 				69A0033925F52B100018C0F0 /* Sources */,
 				69A0033A25F52B100018C0F0 /* Frameworks */,
 				69A0033B25F52B100018C0F0 /* Resources */,
+				1656D8E290A483F19ED83F09 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Habitz;
-			packageProductDependencies = (
-			);
 			productName = Habitz;
 			productReference = 69A0033D25F52B100018C0F0 /* Habitz.app */;
 			productType = "com.apple.product-type.application";
@@ -271,8 +310,6 @@
 				Base,
 			);
 			mainGroup = 69A0033425F52B100018C0F0;
-			packageReferences = (
-			);
 			productRefGroup = 69A0033E25F52B100018C0F0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -295,6 +332,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1656D8E290A483F19ED83F09 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Habitz/Pods-Habitz-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Habitz/Pods-Habitz-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Habitz/Pods-Habitz-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		47D1516DC987634CE12F1BC6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Habitz-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		69A0033925F52B100018C0F0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -313,6 +392,7 @@
 				69A0034325F52B100018C0F0 /* SceneDelegate.swift in Sources */,
 				69BCD98C261FEE0300372005 /* HabitUtils.swift in Sources */,
 				69A0035B25F52D080018C0F0 /* CreateHabitView.swift in Sources */,
+				69040AEC2644CDF900414F10 /* PurchaseService.swift in Sources */,
 				69DBF80526430C05009A745C /* Insights+CoreDataClass.swift in Sources */,
 				69BCD990261FEEB700372005 /* UserStorageUtil.swift in Sources */,
 				69BCD998261FF07900372005 /* Theme.swift in Sources */,
@@ -459,6 +539,7 @@
 		};
 		69A0035525F52B110018C0F0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 113970D90790F89E5CCAAD63 /* Pods-Habitz.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -481,6 +562,7 @@
 		};
 		69A0035625F52B110018C0F0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3297D5397C8BFB4956A6152D /* Pods-Habitz.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

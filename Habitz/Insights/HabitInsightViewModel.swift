@@ -9,8 +9,10 @@ import Foundation
 import SwiftUI
 
 class HabitInsightViewModel: ObservableObject {
+    
     @Published var isInsightEntity = false
-
+    @Published var showPremiumFeature = false
+    
     static func calcPorportion(arr: [Int],index: Int) -> CGFloat {
         let workingSpace = Dimensions.Width * 0.8
         var sum = 0

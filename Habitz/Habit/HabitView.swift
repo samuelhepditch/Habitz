@@ -287,7 +287,9 @@ struct RestartAlertView: View {
                 
                 Button(action:{
                     HabitUtils.restartHabit(habit)
-                    insights[0].successArray![0] += 1  //Add one to failure count
+                    if UserStorageUtil.getBool(UserStorageUtil.isPremiumMember) {
+                        insights[0].successArray![0] += 1  //Add one to failure count
+                    }
                     CoreDataManager.shared.save()
                     self.isRestartAlert = false
                 }){
@@ -324,11 +326,15 @@ struct BuildButtonView: View {
                 Button(action:{
                     HabitUtils.buildHabit(habit)
                     if habit.progress![habit.progress!.count - 1][1] == 1 {
-                        insights[0].successArray![1] += 1
+                        if UserStorageUtil.getBool(UserStorageUtil.isPremiumMember) {
+                            insights[0].successArray![1] += 1
+                        }
                         HabitUtils.restartHabit(habit)
                         if let cycles = habit.cycles {
                             if cycles == "0" {
-                                insights[0].habitsBuilt = "\(Int(insights[0].habitsBuilt!)! + 1)"
+                                if UserStorageUtil.getBool(UserStorageUtil.isPremiumMember) {
+                                    insights[0].habitsBuilt = "\(Int(insights[0].habitsBuilt!)! + 1)"
+                    
                                 switch habit.category {
                                 case "Diet": insights[0].categoryArray![0] += 1
                                 case "Fitness": insights[0].categoryArray![1] += 1
@@ -337,8 +343,11 @@ struct BuildButtonView: View {
                                 case "ColdTurkey": insights[0].categoryArray![4] += 1
                                 default: insights[0].categoryArray![5] += 1  //Routine
                                 }
+                                }
                             }
-                            insights[0].totalCycles = "\(Int(insights[0].totalCycles!)! + 1)"
+                            if UserStorageUtil.getBool(UserStorageUtil.isPremiumMember) {
+                                insights[0].totalCycles = "\(Int(insights[0].totalCycles!)! + 1)"
+                            }
                             habit.cycles = "\(Int(cycles)! + 1)"
                         }
                         CoreDataManager.shared.save()

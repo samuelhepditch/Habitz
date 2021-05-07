@@ -25,93 +25,110 @@ struct HabitInsightView: View {
         ZStack{
             Form {
                 Section{
-                    HStack {
-                        Spacer()
-                        Text("Habit Insights")
-                            .font(.title)
+                    HStack{
+                        Text("Habits Built: ")
+                            .font(.headline)
                             .fontWeight(.semibold)
                             .foregroundColor(colorScheme == .dark ? .white : .black)
                         Spacer()
-                    }
-                }
-                if viewModel.isInsightEntity == true {
-                    Section{
-                        HStack{
-                            Text("Habits Built: ")
-                                .font(.headline)
-                                .fontWeight(.semibold)
-                                .foregroundColor(colorScheme == .dark ? .white : .black)
-                            Spacer()
+                        if viewModel.showPremiumFeature{
                             Text("\(insights[0].habitsBuilt!)")
                                 .font(.headline)
                                 .fontWeight(.semibold)
                                 .foregroundColor(colorScheme == .dark ? .white : .black)
-                        }
-                    }
-                    
-                    Section {
-                        HStack{
-                            Text("Habits Built By Category ")
-                                .font(.headline)
-                                .fontWeight(.semibold)
-                                .foregroundColor(colorScheme == .dark ? .white : .black)
-                            Spacer()
-                        }
-                        CategoryGraph(categoryArray: insights[0].categoryArray!)
-                    }
-                    
-                    Section{
-                        HStack{
-                            Text("Total Habit Cycles: ")
-                                .font(.headline)
-                                .fontWeight(.semibold)
-                                .foregroundColor(colorScheme == .dark ? .white : .black)
-                            Spacer()
-                            Text("\(insights[0].totalCycles!)")
+                        }else{
+                            Text("0")
                                 .font(.headline)
                                 .fontWeight(.semibold)
                                 .foregroundColor(colorScheme == .dark ? .white : .black)
                         }
                     }
-                    
-                    Section {
-                        Text("Success Ratio")
+                }
+                
+                Section {
+                    HStack{
+                        Text("Habits Built By Category ")
                             .font(.headline)
                             .fontWeight(.semibold)
                             .foregroundColor(colorScheme == .dark ? .white : .black)
-                        SuccessRatioGraph(successRatioArray: insights[0].successArray!)
+                        Spacer()
+                    }
+                    CategoryGraph(categoryArray: viewModel.showPremiumFeature ? insights[0].categoryArray! : [0,0,0,0,0,0])
+                }
+                
+                Section{
+                    HStack{
+                        Text("Total Habit Cycles: ")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                        Spacer()
+                        if viewModel.showPremiumFeature {
+                        Text("\(insights[0].totalCycles!)")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                        }else {
+                            Text("0")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(colorScheme == .dark ? .white : .black)
+                        }
                     }
                 }
+                
+                Section {
+                    Text("Success Ratio")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(colorScheme == .dark ? .white : .black)
+                    SuccessRatioGraph(successRatioArray: viewModel.showPremiumFeature ? insights[0].successArray! : [0,0])
+                }
+                
             }
             .navigationBarHidden(true)
+            
+            if viewModel.showPremiumFeature == false {
+                Color.secondary
+                Button(action:{
+                    PurchaseService.purchase(productID: "insight"){
+                        generateInsightEntity(){
+                            viewModel.showPremiumFeature = true
+                            UserStorageUtil.store(true, key: UserStorageUtil.isPremiumMember)
+                        }
+                    }
+                }){
+                    Text("Go Premium!")
+                }
+            }
         }
         .onAppear{
-            if !UserStorageUtil.getBool(UserStorageUtil.notFirstLaunch) {
-                UserStorageUtil.store(true, key: UserStorageUtil.notFirstLaunch)
-                //MARK: create insights entity
-                let newInsights = Insights(context: self.moc)
-                newInsights.habitsBuilt = "0"
-                newInsights.totalCycles = "0"
-                newInsights.categoryArray = [0,0,0,0,0,0]
-                newInsights.successArray = [0,0]
-                print("----------------------------------")
-                print("Habit Insights\n")
-                print("----------------------------------")
-                print("Habits Built: \(String(describing: newInsights.habitsBuilt!)) \n")
-                print("Total Cycles: \(String(describing: newInsights.totalCycles!)) \n")
-                print("Category Array: \(String(describing: newInsights.categoryArray!)) \n")
-                print("Success Array: \(String(describing: newInsights.successArray!)) \n")
-                print("----------------------------------")
-                CoreDataManager.shared.save(){ _ in
-                    self.viewModel.isInsightEntity = true
-                }
-            }else{
-                viewModel.isInsightEntity = true
+            if UserStorageUtil.getBool(UserStorageUtil.isPremiumMember) == true {
+                viewModel.showPremiumFeature = true
             }
         }
         
     }
     
+    func generateInsightEntity(completion: @escaping () -> Void){
+        //MARK: create insights entity
+        let newInsights = Insights(context: self.moc)
+        newInsights.habitsBuilt = "0"
+        newInsights.totalCycles = "0"
+        newInsights.categoryArray = [0,0,0,0,0,0]
+        newInsights.successArray = [0,0]
+        print("----------------------------------")
+        print("Habit Insights\n")
+        print("----------------------------------")
+        print("Habits Built: \(String(describing: newInsights.habitsBuilt!)) \n")
+        print("Total Cycles: \(String(describing: newInsights.totalCycles!)) \n")
+        print("Category Array: \(String(describing: newInsights.categoryArray!)) \n")
+        print("Success Array: \(String(describing: newInsights.successArray!)) \n")
+        print("----------------------------------")
+        CoreDataManager.shared.save(){ _ in
+            completion()
+        }
+    }
 }
 
 
@@ -123,7 +140,7 @@ struct CategoryGraph: View {
     var body: some View {
         VStack(alignment: .leading){
             Group {
-                Text("Diet: \(categoryArray[0])").font(.subheadline).fontWeight(.semibold)
+                Text("Diet: \(categoryArray[0])").font(.subheadline).fontWeight(.semibold).padding(.top, 5)
                 Rectangle()
                     .frame(width: categoryArray[0] == 0 ? 20 : HabitInsightViewModel.calcPorportion(arr: categoryArray, index: 0), height: Dimensions.Height / 75)
                     .foregroundColor(.red)
@@ -157,6 +174,7 @@ struct CategoryGraph: View {
                 Rectangle()
                     .frame(width: categoryArray[5] == 0 ? 20 : HabitInsightViewModel.calcPorportion(arr: categoryArray, index: 5), height: Dimensions.Height / 75)
                     .foregroundColor(.yellow)
+                    .padding(.bottom, 5)
             }
         }
     }
@@ -173,7 +191,7 @@ struct SuccessRatioGraph: View {
     var body: some View {
         VStack(alignment: .leading){
             Group {
-                Text("Failures: \(successRatioArray[0])").font(.subheadline).fontWeight(.semibold)
+                Text("Failures: \(successRatioArray[0])").font(.subheadline).fontWeight(.semibold).padding(.top, 5)
                 Rectangle()
                     .frame(width: successRatioArray[0] == 0 ? 20 : HabitInsightViewModel.calcPorportion(arr: successRatioArray, index: 0), height: Dimensions.Height / 75)
                     .foregroundColor(.red)
@@ -183,7 +201,10 @@ struct SuccessRatioGraph: View {
                 Rectangle()
                     .frame(width: successRatioArray[1] == 0 ? 20 : HabitInsightViewModel.calcPorportion(arr: successRatioArray, index: 1), height: Dimensions.Height / 75)
                     .foregroundColor(.green)
+                    .padding(.bottom, 5)
             }
         }
     }
 }
+
+
