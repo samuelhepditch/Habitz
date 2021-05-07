@@ -10,27 +10,31 @@ import SwiftUI
 struct ControlView: View {
     @StateObject var theme = Theme()
     let container = CoreDataManager.shared.container.viewContext
+    @State private var selection = 1
     var body: some View {
         NavigationView {
-            TabView {
+            TabView(selection: $selection){
                 HabitInsightView()
                     .tabItem{
                         Image(systemName: "person")
                         Text("Insights")
                     }
                     .environment(\.managedObjectContext, container)
+                    .tag(0)
                 HabitView()
                     .tabItem{
                         Image(systemName: "plus.app")
                         Text("Habits")
                     }
                     .environment(\.managedObjectContext, container)
+                    .tag(1)
                 SettingsView()
                     .tabItem{
                         Image(systemName: "gearshape")
                         Text("Settings")
                     }
                     .environment(\.managedObjectContext, container)
+                    .tag(2)
             }
         }
         .environmentObject(theme)

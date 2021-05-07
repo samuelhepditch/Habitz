@@ -24,6 +24,14 @@ struct HabitInsightView: View {
     var body: some View {
         ZStack{
             Form {
+                Section {
+                    Text("Success Ratio")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(colorScheme == .dark ? .white : .black)
+                    SuccessRatioGraph(successRatioArray: viewModel.showPremiumFeature ? insights[0].successArray! : [0,0])
+                }
+                
                 Section{
                     HStack{
                         Text("Habits Built: ")
@@ -75,14 +83,6 @@ struct HabitInsightView: View {
                                 .foregroundColor(colorScheme == .dark ? .white : .black)
                         }
                     }
-                }
-                
-                Section {
-                    Text("Success Ratio")
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(colorScheme == .dark ? .white : .black)
-                    SuccessRatioGraph(successRatioArray: viewModel.showPremiumFeature ? insights[0].successArray! : [0,0])
                 }
                 
             }
