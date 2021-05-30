@@ -10,11 +10,9 @@ import Purchases
 
 class PurchaseService {
     static func purchase(productID: String?, successfulPurchase: @escaping () -> Void) {
-        print("hello")
         guard productID != nil else {
             return
         }
-        print("bye")
         //MARK: Perform Purchase
         Purchases.shared.products([productID!]) { products in
             if !products.isEmpty {

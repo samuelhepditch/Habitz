@@ -10,7 +10,9 @@ import SwiftUI
 
 class Share {
     static func showActivityController(){
-        let shareView = UIActivityViewController(activityItems: ["Start building Habitz with me."], applicationActivities: nil)
+        let url = URL(string: "https://apps.apple.com/us/app/habitz/id1566466964")
+
+        let shareView = UIActivityViewController(activityItems: [url!], applicationActivities: nil)
         UIApplication.shared.windows.first?.rootViewController?.present(shareView, animated: true, completion: nil)
     }
 }

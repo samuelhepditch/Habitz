@@ -25,6 +25,15 @@ struct HabitInsightView: View {
         ZStack{
             Form {
                 Section {
+                    HStack{
+                        Spacer()
+                        Text("Habit Insights")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                        Spacer()
+                    }
+                }
+                Section {
                     Text("Success Ratio")
                         .font(.headline)
                         .fontWeight(.semibold)
@@ -72,10 +81,10 @@ struct HabitInsightView: View {
                             .foregroundColor(colorScheme == .dark ? .white : .black)
                         Spacer()
                         if viewModel.showPremiumFeature {
-                        Text("\(insights[0].totalCycles!)")
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                            Text("\(insights[0].totalCycles!)")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(colorScheme == .dark ? .white : .black)
                         }else {
                             Text("0")
                                 .font(.headline)
@@ -90,16 +99,7 @@ struct HabitInsightView: View {
             
             if viewModel.showPremiumFeature == false {
                 Color.secondary
-                Button(action:{
-                    PurchaseService.purchase(productID: "insight"){
-                        generateInsightEntity(){
-                            viewModel.showPremiumFeature = true
-                            UserStorageUtil.store(true, key: UserStorageUtil.isPremiumMember)
-                        }
-                    }
-                }){
-                    Text("Go Premium!")
-                }
+                GoPremiumView(showPremiumFeature: $viewModel.showPremiumFeature)
             }
         }
         .onAppear{
@@ -108,26 +108,6 @@ struct HabitInsightView: View {
             }
         }
         
-    }
-    
-    func generateInsightEntity(completion: @escaping () -> Void){
-        //MARK: create insights entity
-        let newInsights = Insights(context: self.moc)
-        newInsights.habitsBuilt = "0"
-        newInsights.totalCycles = "0"
-        newInsights.categoryArray = [0,0,0,0,0,0]
-        newInsights.successArray = [0,0]
-        print("----------------------------------")
-        print("Habit Insights\n")
-        print("----------------------------------")
-        print("Habits Built: \(String(describing: newInsights.habitsBuilt!)) \n")
-        print("Total Cycles: \(String(describing: newInsights.totalCycles!)) \n")
-        print("Category Array: \(String(describing: newInsights.categoryArray!)) \n")
-        print("Success Array: \(String(describing: newInsights.successArray!)) \n")
-        print("----------------------------------")
-        CoreDataManager.shared.save(){ _ in
-            completion()
-        }
     }
 }
 
@@ -208,3 +188,75 @@ struct SuccessRatioGraph: View {
 }
 
 
+//MARK: GoPremiumView
+
+struct GoPremiumView: View {
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(
+        entity: Insights.entity(),
+        sortDescriptors: []
+    ) var insights: FetchedResults<Insights>
+    @Environment(\.colorScheme) var colorScheme
+    @Binding var showPremiumFeature: Bool
+    var body: some View {
+        VStack{
+            VStack {
+                Text("Insights that hold you accountable!")
+                    .font(.headline)
+                    .padding(.top, 10)
+                    .padding(.bottom,10)
+                
+                Divider()
+                Button(action:{
+                    PurchaseService.purchase(productID: "insight"){
+                        generateInsightEntity(){
+                            showPremiumFeature = true
+                            UserStorageUtil.store(true, key: UserStorageUtil.isPremiumMember)
+                        }
+                    }
+                }){
+                    VStack{
+                        Text("Go Premium 🔓")
+                            .font(.headline)
+                    }
+                }
+            }
+            .foregroundColor(colorScheme == .dark ? .white : .black)
+            .padding(10)
+            .background(colorScheme == .dark ? Color.black : Color.white)
+            .cornerRadius(10)
+            .padding(.bottom, 20)
+            .frame(width: Dimensions.Width * 0.8)
+            VStack {
+                Text("*Previous purchases restored free of charge*")
+                    .font(.subheadline)
+            }
+            .foregroundColor(colorScheme == .dark ? .white : .black)
+            .padding(10)
+            .background(colorScheme == .dark ? Color.black : Color.white)
+            .cornerRadius(10)
+            .padding(.bottom, 20)
+            .frame(width: Dimensions.Width * 0.8)
+        }
+    }
+    
+    func generateInsightEntity(completion: @escaping () -> Void){
+        //MARK: create insights entity
+        let newInsights = Insights(context: self.moc)
+        newInsights.habitsBuilt = "0"
+        newInsights.totalCycles = "0"
+        newInsights.categoryArray = [0,0,0,0,0,0]
+        newInsights.successArray = [0,0]
+        print("----------------------------------")
+        print("Habit Insights\n")
+        print("----------------------------------")
+        print("Habits Built: \(String(describing: newInsights.habitsBuilt!)) \n")
+        print("Total Cycles: \(String(describing: newInsights.totalCycles!)) \n")
+        print("Category Array: \(String(describing: newInsights.categoryArray!)) \n")
+        print("Success Array: \(String(describing: newInsights.successArray!)) \n")
+        print("----------------------------------")
+        CoreDataManager.shared.save(){ _ in
+            completion()
+        }
+    }
+}
