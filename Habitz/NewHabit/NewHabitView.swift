@@ -13,8 +13,20 @@ struct NewHabitView: View {
         ZStack{
             Color(.systemBackground)
                 .edgesIgnoringSafeArea(.all)
-            NewHabitButton()
+            VStack{
+                Spacer()
+                Text("\"Change might not be fast and it isn't always easy. But with time and effort, almost any habit can be reshaped.\"")
+                   .bold()
+                   .italic()
+                   .padding(40)
+                Text("- Charles Duhigg")
+                   .bold()
+                   .italic()
+                Spacer()
+                NewHabitButton()
                 .environmentObject(theme)
+                Spacer()
+            }
         }.frame(width: Dimensions.Width)
         .environmentObject(theme)
     }

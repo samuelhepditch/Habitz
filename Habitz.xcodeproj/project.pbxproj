@@ -9,9 +9,10 @@
 /* Begin PBXBuildFile section */
 		3425CB94A0B594A018DA5C2A /* Pods_Habitz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7361A2EAED821D71016D23F /* Pods_Habitz.framework */; };
 		69040AE12644BED400414F10 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69040AE02644BED400414F10 /* StoreKit.framework */; };
-		69040AEC2644CDF900414F10 /* PurchaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69040AEB2644CDF900414F10 /* PurchaseService.swift */; };
 		691600792606E98C00DEF042 /* HabitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691600782606E98C00DEF042 /* HabitButton.swift */; };
 		6953939225F5320900D50D59 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6953939125F5320900D50D59 /* SettingsView.swift */; };
+		695EC820269BCE8C006B2D1B /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695EC81F269BCE8C006B2D1B /* SoundManager.swift */; };
+		695EC829269BD259006B2D1B /* click.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 695EC828269BD259006B2D1B /* click.mp3 */; };
 		696A65632641C44200B407D5 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A65622641C44200B407D5 /* CoreDataManager.swift */; };
 		696A656D2642119600B407D5 /* Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A656C2642119600B407D5 /* Dimensions.swift */; };
 		696A657126422A2B00B407D5 /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A657026422A2B00B407D5 /* Share.swift */; };
@@ -43,9 +44,10 @@
 		113970D90790F89E5CCAAD63 /* Pods-Habitz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Habitz.debug.xcconfig"; path = "Target Support Files/Pods-Habitz/Pods-Habitz.debug.xcconfig"; sourceTree = "<group>"; };
 		3297D5397C8BFB4956A6152D /* Pods-Habitz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Habitz.release.xcconfig"; path = "Target Support Files/Pods-Habitz/Pods-Habitz.release.xcconfig"; sourceTree = "<group>"; };
 		69040AE02644BED400414F10 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		69040AEB2644CDF900414F10 /* PurchaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseService.swift; sourceTree = "<group>"; };
 		691600782606E98C00DEF042 /* HabitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitButton.swift; sourceTree = "<group>"; };
 		6953939125F5320900D50D59 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		695EC81F269BCE8C006B2D1B /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
+		695EC828269BD259006B2D1B /* click.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = click.mp3; sourceTree = "<group>"; };
 		696A65622641C44200B407D5 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		696A656C2642119600B407D5 /* Dimensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dimensions.swift; sourceTree = "<group>"; };
 		696A657026422A2B00B407D5 /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
@@ -98,14 +100,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		69040AEA2644CDEA00414F10 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				69040AEB2644CDF900414F10 /* PurchaseService.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
 		6916006F2606DCB400DEF042 /* UIElements */ = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +144,14 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		695EC823269BD238006B2D1B /* SoundFX */ = {
+			isa = PBXGroup;
+			children = (
+				695EC828269BD259006B2D1B /* click.mp3 */,
+			);
+			path = SoundFX;
+			sourceTree = "<group>";
+		};
 		696A65662641CF0300B407D5 /* DataManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -191,7 +193,6 @@
 		69A0033F25F52B100018C0F0 /* Habitz */ = {
 			isa = PBXGroup;
 			children = (
-				69040AEA2644CDEA00414F10 /* Services */,
 				69A0037325F52F0E0018C0F0 /* Control */,
 				69A0036F25F52EE00018C0F0 /* Insights */,
 				6923E35825F57A5D00F80423 /* NewHabit */,
@@ -223,6 +224,8 @@
 		69A0036725F52D9D0018C0F0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				695EC823269BD238006B2D1B /* SoundFX */,
+				695EC81F269BCE8C006B2D1B /* SoundManager.swift */,
 				69BCD997261FF07900372005 /* Theme.swift */,
 				696A656C2642119600B407D5 /* Dimensions.swift */,
 				6916006F2606DCB400DEF042 /* UIElements */,
@@ -325,6 +328,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				69A0035025F52B110018C0F0 /* LaunchScreen.storyboard in Resources */,
+				695EC829269BD259006B2D1B /* click.mp3 in Resources */,
 				69A0034D25F52B110018C0F0 /* Preview Assets.xcassets in Resources */,
 				69A0034A25F52B110018C0F0 /* Assets.xcassets in Resources */,
 			);
@@ -392,8 +396,8 @@
 				69A0034325F52B100018C0F0 /* SceneDelegate.swift in Sources */,
 				69BCD98C261FEE0300372005 /* HabitUtils.swift in Sources */,
 				69A0035B25F52D080018C0F0 /* CreateHabitView.swift in Sources */,
-				69040AEC2644CDF900414F10 /* PurchaseService.swift in Sources */,
 				69DBF80526430C05009A745C /* Insights+CoreDataClass.swift in Sources */,
+				695EC820269BCE8C006B2D1B /* SoundManager.swift in Sources */,
 				69BCD990261FEEB700372005 /* UserStorageUtil.swift in Sources */,
 				69BCD998261FF07900372005 /* Theme.swift in Sources */,
 				69A0035F25F52D130018C0F0 /* HabitView.swift in Sources */,

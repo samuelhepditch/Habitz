@@ -287,9 +287,7 @@ struct RestartAlertView: View {
                 
                 Button(action:{
                     HabitUtils.restartHabit(habit)
-                    if UserStorageUtil.getBool(UserStorageUtil.isPremiumMember) {
-                        insights[0].successArray![0] += 1  //Add one to failure count
-                    }
+                    insights[0].successArray![0] += 1  //Add one to failure count
                     CoreDataManager.shared.save()
                     self.isRestartAlert = false
                 }){
@@ -325,29 +323,25 @@ struct BuildButtonView: View {
                 Spacer()
                 Button(action:{
                     HabitUtils.buildHabit(habit)
+                    if (UserStorageUtil.getBool(UserStorageUtil.soundFX)) {
+                        SoundManager.instance.playSound()
+                    }
                     if habit.progress![habit.progress!.count - 1][1] == 1 {
-                        if UserStorageUtil.getBool(UserStorageUtil.isPremiumMember) {
-                            insights[0].successArray![1] += 1
-                        }
+                        insights[0].successArray![1] += 1
                         HabitUtils.restartHabit(habit)
                         if let cycles = habit.cycles {
                             if cycles == "0" {
-                                if UserStorageUtil.getBool(UserStorageUtil.isPremiumMember) {
-                                    insights[0].habitsBuilt = "\(Int(insights[0].habitsBuilt!)! + 1)"
-                    
+                                insights[0].habitsBuilt = "\(Int(insights[0].habitsBuilt!)! + 1)"
                                 switch habit.category {
-                                case "Diet": insights[0].categoryArray![0] += 1
-                                case "Fitness": insights[0].categoryArray![1] += 1
-                                case "Happiness": insights[0].categoryArray![2] += 1
-                                case "Productivity": insights[0].categoryArray![3] += 1
-                                case "ColdTurkey": insights[0].categoryArray![4] += 1
-                                default: insights[0].categoryArray![5] += 1  //Routine
-                                }
+                                    case "Diet": insights[0].categoryArray![0] += 1
+                                    case "Fitness": insights[0].categoryArray![1] += 1
+                                    case "Happiness": insights[0].categoryArray![2] += 1
+                                    case "Productivity": insights[0].categoryArray![3] += 1
+                                    case "ColdTurkey": insights[0].categoryArray![4] += 1
+                                    default: insights[0].categoryArray![5] += 1  //Routine
                                 }
                             }
-                            if UserStorageUtil.getBool(UserStorageUtil.isPremiumMember) {
-                                insights[0].totalCycles = "\(Int(insights[0].totalCycles!)! + 1)"
-                            }
+                            insights[0].totalCycles = "\(Int(insights[0].totalCycles!)! + 1)"
                             habit.cycles = "\(Int(cycles)! + 1)"
                         }
                         CoreDataManager.shared.save()

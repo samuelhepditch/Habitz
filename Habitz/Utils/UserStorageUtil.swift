@@ -10,7 +10,9 @@ import Foundation
 class UserStorageUtil {
     
     static let theme = "theme"
-    static let isPremiumMember = "isPremiumMember"
+    static let insightGenerated = "insightGen"
+    static let soundFX = "soundFX"
+    static let notifications = "notifications"
     
     static func store(_ item: Any, key: String) {
         let userDefaults = UserDefaults.standard

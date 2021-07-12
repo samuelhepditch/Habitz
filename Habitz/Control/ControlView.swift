@@ -10,7 +10,7 @@ import SwiftUI
 struct ControlView: View {
     @StateObject var theme = Theme()
     let container = CoreDataManager.shared.container.viewContext
-    @State private var selection = 1
+    @State private var selection = 0
     var body: some View {
         NavigationView {
             TabView(selection: $selection){
