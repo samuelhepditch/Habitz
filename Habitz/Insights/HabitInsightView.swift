@@ -14,6 +14,8 @@ struct HabitInsightView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
+    @State private var resetViewActive = false
+    
     @FetchRequest(
         entity: Insights.entity(),
         sortDescriptors: []
@@ -38,7 +40,7 @@ struct HabitInsightView: View {
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(colorScheme == .dark ? .white : .black)
-                    SuccessRatioGraph(successRatioArray: viewModel.isInsightGenerated ? insights[0].successArray! : [0,0])
+                    SuccessRatioGraph(successRatioArray: UserStorageUtil.getBool(UserStorageUtil.insightGenerated) ? insights[0].successArray! : [0,0])
                 }
                 
                 Section{
@@ -48,7 +50,7 @@ struct HabitInsightView: View {
                             .fontWeight(.semibold)
                             .foregroundColor(colorScheme == .dark ? .white : .black)
                         Spacer()
-                        if viewModel.isInsightGenerated{
+                        if UserStorageUtil.getBool(UserStorageUtil.insightGenerated) {
                             Text("\(insights[0].habitsBuilt!)")
                                 .font(.headline)
                                 .fontWeight(.semibold)
@@ -69,7 +71,7 @@ struct HabitInsightView: View {
                             .fontWeight(.semibold)
                             .foregroundColor(colorScheme == .dark ? .white : .black)
                         Spacer()
-                        if viewModel.isInsightGenerated {
+                        if UserStorageUtil.getBool(UserStorageUtil.insightGenerated) {
                             Text("\(insights[0].totalCycles!)")
                                 .font(.headline)
                                 .fontWeight(.semibold)
@@ -92,14 +94,14 @@ struct HabitInsightView: View {
                             .foregroundColor(colorScheme == .dark ? .white : .black)
                         Spacer()
                     }
-                    CategoryGraph(categoryArray: viewModel.isInsightGenerated ? insights[0].categoryArray! : [0,0,0,0,0,0])
+                    CategoryGraph(categoryArray: UserStorageUtil.getBool(UserStorageUtil.insightGenerated) ? insights[0].categoryArray! : [0,0,0,0,0,0])
                 }
                                 
                 Section {
                     HStack{
                         Spacer()
                         Button(action: {
-                            
+                            resetViewActive = true 
                         }){
                             Text("RESET")
                                 .font(.headline)
@@ -111,13 +113,17 @@ struct HabitInsightView: View {
                 }
             }
             .navigationBarHidden(true)
+            if resetViewActive {
+                Color.secondary
+                ResetView(resetViewActive: $resetViewActive).padding()
+            }
         }.onAppear(){
             if (!UserStorageUtil.getBool(UserStorageUtil.insightGenerated)) {
               generateInsightEntity() {
                   UserStorageUtil.store(true, key: UserStorageUtil.insightGenerated)
-                  viewModel.isInsightGenerated = true;
               }
             }
+            viewModel.update.toggle();
         }
         
     }
@@ -139,6 +145,75 @@ struct HabitInsightView: View {
         print("----------------------------------")
         CoreDataManager.shared.save(){ _ in
             completion()
+        }
+    }
+}
+
+
+//MARK: ResetView
+
+struct ResetView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @Binding var resetViewActive: Bool
+    @FetchRequest(
+        entity: Insights.entity(),
+        sortDescriptors: []
+    ) var insights: FetchedResults<Insights>
+    @FetchRequest(
+        entity: Habit.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Habit.name, ascending: true)]
+    ) var habit: FetchedResults<Habit>
+    var body: some View {
+        VStack{
+            VStack {
+                Text("Are You Sure?")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .padding(.bottom,10)
+                Text("Resetting insights will return all recorded data to zero.")
+                    .font(.headline)
+                    .padding(.bottom, 20)
+            }
+            .foregroundColor(colorScheme == .dark ? .white : .black)
+            .padding(10)
+            .background(colorScheme == .dark ? Color.black : Color.white)
+            .cornerRadius(10)
+            .padding(.bottom, 20)
+            
+            HStack {
+                Button(action:{
+                    resetViewActive = false;
+                }){
+                    Text("CANCEL")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                }
+                .frame(width: 100, height: 60)
+                .background(colorScheme == .dark ? Color.black : Color.white)
+                .cornerRadius(10)
+                .padding(.trailing, Dimensions.Width * 0.2)
+                
+                Button(action:{
+                    insights[0].habitsBuilt = "0"
+                    insights[0].totalCycles = "0"
+                    insights[0].categoryArray = [0,0,0,0,0,0]
+                    insights[0].successArray = [0,0]
+                    CoreDataManager.shared.save()
+                    for item in habit {
+                        item.cycles = "0";
+                        CoreDataManager.shared.save()
+                    }
+                    resetViewActive = false;
+                }){
+                    Text("RESET")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(colorScheme == .dark ? .white : .black)
+                }
+                .frame(width: 100, height: 60)
+                .background(colorScheme == .dark ? Color.black : Color.white)
+                .cornerRadius(10)
+            }
         }
     }
 }
