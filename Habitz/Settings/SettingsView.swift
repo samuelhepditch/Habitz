@@ -13,16 +13,24 @@ struct SettingsView: View {
     @State private var soundFXEnabled: Bool = UserStorageUtil.getBool(UserStorageUtil.soundFX)
     
     var body: some View {
-        List {
-            Toggle("Dark Mode", isOn: self.$darkModeEnabled)
-                .onChange(of: self.darkModeEnabled) { enabled in
-                    UserStorageUtil.store(enabled, key: UserStorageUtil.theme)
-                    theme.darkMode = enabled
+        VStack{
+            List {
+                Toggle("Dark Mode", isOn: self.$darkModeEnabled)
+                    .onChange(of: self.darkModeEnabled) { enabled in
+                        UserStorageUtil.store(enabled, key: UserStorageUtil.theme)
+                        theme.darkMode = enabled
+                    }
+                Toggle("SoundFX", isOn: self.$soundFXEnabled)
+                    .onChange(of: self.soundFXEnabled) { enabled in
+                        UserStorageUtil.store(enabled, key: UserStorageUtil.soundFX)
+                    }
             }
-            Toggle("SoundFX", isOn: self.$soundFXEnabled)
-                .onChange(of: self.soundFXEnabled) { enabled in
-                    UserStorageUtil.store(enabled, key: UserStorageUtil.soundFX)
-            }
+            Text("More updates coming soon.\nStay tuned! - Habitz team")
+            .padding()
+            .border(Color.red, width: 2)
+            .padding()
+            .offset(y: -Dimensions.Height / 2)
+            
         }
         .navigationBarHidden(true)
         .font(.headline)
