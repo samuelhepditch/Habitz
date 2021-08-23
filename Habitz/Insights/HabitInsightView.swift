@@ -62,17 +62,6 @@ struct HabitInsightView: View {
                     }
                 }
                 
-                Section {
-                    HStack{
-                        Text("Habits Built By Category ")
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                            .foregroundColor(colorScheme == .dark ? .white : .black)
-                        Spacer()
-                    }
-                    CategoryGraph(categoryArray: viewModel.isInsightGenerated ? insights[0].categoryArray! : [0,0,0,0,0,0])
-                }
-                
                 Section{
                     HStack{
                         Text("Total Habit Cycles: ")
@@ -93,7 +82,19 @@ struct HabitInsightView: View {
                         }
                     }
                 }
+
                 
+                Section {
+                    HStack{
+                        Text("Habits Built By Category ")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                        Spacer()
+                    }
+                    CategoryGraph(categoryArray: viewModel.isInsightGenerated ? insights[0].categoryArray! : [0,0,0,0,0,0])
+                }
+                                
                 Section {
                     HStack{
                         Spacer()

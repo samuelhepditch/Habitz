@@ -49,16 +49,16 @@ class createHabitViewModel: ObservableObject {
     func validEntry() -> Bool {
         if Name != "" && Motivation != ""  && Days != "" {
             if !Days.isInt {
-                errorMessage = "Error: Enter a integer value into the \"Days\" field."
+                errorMessage = "Enter a integer into \"Days\" field."
                 return false
             }else if Int(Days)! >= 100 {
-                errorMessage = "Error: Enter a value less than 100 into the \"Days\" field."
+                errorMessage = "Enter a integer less than 100 into \"Days\" field."
                 return false
             }else{
                 return true
             }
         }
-        errorMessage = "Error: Complete all the required fields."
+        errorMessage = "Complete all the required fields."
         return false
     }
 }
